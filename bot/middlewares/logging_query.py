@@ -29,13 +29,6 @@ class UserRegistrationMiddleware(BaseMiddleware):
         if event.text and any(event.text.startswith(cmd) for cmd in skip_commands):
             return await handler(event, data)
 
-        #   <-| ----------------- -<phasalo>- ------------------ |->
-        #                                                          |
-        #     логгирование или своя логика                         | <=| PHASALO<|||
-        #                                                          |
-        #   <-| ----------------- -<phasalo>- ------------------ |->
-
-        # например
         user_row: Optional[UserModel] = data.get('user_row')
         if user_row is None:
             logger.warning(
