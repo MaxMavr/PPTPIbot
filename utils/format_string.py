@@ -14,11 +14,15 @@ def get_query_count_emoji(count: int) -> str:
     return PHRASES_RU.icon.query.default
 
 
+def make_yandex_song_link(song_id: str, album_id: str) -> str:
+    return f'https://music.yandex.ru/album/{album_id}/track/{song_id}'
+
+
 def make_song_lyrics_message(lines: str,
                              artist_song: str = None, song: str = None, artist: str = None,
                              link: str = None
                              ) -> str:
-    message_parts = [f'<i>«{lines}»</i>\n\n']
+    message_parts = [f'<i>«{clear_string(lines)}»</i>\n\n']
 
     name_part = ''
     if artist_song:
@@ -39,6 +43,6 @@ def make_song_lyrics_message(lines: str,
         name_part = song
 
     if link and name_part:
-        message_parts.append(f'<a href="{link}">{name_part}</a>')
+        message_parts.append(f'<a href="{link}">{clear_string(name_part)}</a>')
 
     return ''.join(message_parts)

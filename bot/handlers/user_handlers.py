@@ -1,10 +1,6 @@
 from aiogram.types import Message
-
 from aiogram import Router, F
-
 from DB.tables.users import UsersTable
-from bot.keyboards import user_keyboards
-
 from config import config
 from phrases import PHRASES_RU
 
@@ -22,4 +18,4 @@ async def _(message: Message):
 
 @router.message()
 async def _(message: Message):
-    await message.answer(text=PHRASES_RU.answers.unknown, reply_markup=user_keyboards.keyboard)
+    await message.answer(text=PHRASES_RU.answers.unknown)
