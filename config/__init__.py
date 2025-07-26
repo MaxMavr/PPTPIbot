@@ -1,7 +1,7 @@
 import os
 import logging
 import logging.handlers
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 from aiogram import Bot
 from aiogram.client.default import DefaultBotProperties
@@ -11,6 +11,7 @@ from config.const import BASE_DIR
 load_dotenv(find_dotenv())
 
 Path(BASE_DIR / 'logs').mkdir(exist_ok=True)
+Path(BASE_DIR / 'temp').mkdir(exist_ok=True)
 
 
 @dataclass
@@ -30,8 +31,17 @@ class TgBot:
 
 
 @dataclass
+class YandexMusic:
+    token: str
+    ynison_device_info: dict = field(default_factory=lambda: {'app_name': 'Chrome', 'type': 1})
+    ynison_gry_main_url: str = 'wss://ynison.music.yandex.ru/redirector.YnisonRedirectService/GetRedirectToYnison'
+    ynison_pys_main_url: str = 'wss://%%/ynison_state.YnisonStateService/PutYnisonState'
+
+
+@dataclass
 class Config:
     tg_bot: TgBot
+    yandex_music: YandexMusic
     log: LogConfig
 
 
@@ -41,6 +51,7 @@ def load_config() -> Config:
             token=os.getenv('BOT_TOKEN'),
             password=os.getenv('PASSWORD')
         ),
+        yandex_music=YandexMusic(os.getenv('YANDEX_TOKEN')),
         log=LogConfig(
             level=os.getenv('LOG_LEVEL', 'INFO'),
             file_path=os.getenv('LOG_FILE', 'logs/bot.log'),
