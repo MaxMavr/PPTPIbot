@@ -12,3 +12,33 @@ def get_query_count_emoji(count: int) -> str:
         if count > threshold:
             return emoji
     return PHRASES_RU.icon.query.default
+
+
+def make_song_lyrics_message(lines: str,
+                             artist_song: str = None, song: str = None, artist: str = None,
+                             link: str = None
+                             ) -> str:
+    message_parts = [f'<i>«{lines}»</i>\n\n']
+
+    name_part = ''
+    if artist_song:
+        for sep in [' - ', ' – ', ' — ']:
+            parts = artist_song.split(sep)
+            if len(parts) == 2:
+                artist, song = parts
+                name_part = f'{artist} — {song}'
+                break
+        else:
+            name_part = artist_song
+
+    elif artist and song:
+        name_part = f'{artist} — {song}'
+    elif artist:
+        name_part = artist
+    elif song:
+        name_part = song
+
+    if link and name_part:
+        message_parts.append(f'<a href="{link}">{name_part}</a>')
+
+    return ''.join(message_parts)
