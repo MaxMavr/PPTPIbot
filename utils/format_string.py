@@ -14,10 +14,6 @@ def get_query_count_emoji(count: int) -> str:
     return PHRASES_RU.icon.query.default
 
 
-def make_yandex_song_link(song_id: str, album_id: str) -> str:
-    return f'https://music.yandex.ru/album/{album_id}/track/{song_id}'
-
-
 def make_song_lyrics_message(lines: str,
                              artist_song: str = None, song: str = None, artist: str = None,
                              link: str = None
