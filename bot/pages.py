@@ -47,15 +47,12 @@ async def user_query(user_id: int, user_id_to_find: Union[int, None], page: int 
         )
 
         if message_id:
-            await bot.edit_message_text(
-                chat_id=user_id,
-                message_id=message_id,
-                text=txt,
-                reply_markup=reply_markup
-            )
+            await bot.edit_message_text(chat_id=user_id, message_id=message_id,
+                                        text=txt, reply_markup=reply_markup,
+                                        disable_web_page_preview=True
+                                        )
         else:
-            await bot.send_message(
-                chat_id=user_id,
-                text=txt,
-                reply_markup=reply_markup
-            )
+            await bot.send_message(chat_id=user_id, text=txt,
+                                   reply_markup=reply_markup,
+                                   disable_web_page_preview=True
+                                   )

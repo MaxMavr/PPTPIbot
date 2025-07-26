@@ -3,6 +3,7 @@ from aiogram import Router, F
 from DB.tables.users import UsersTable
 from config import config
 from phrases import PHRASES_RU
+from utils.format_song_line import format_song_line
 
 router = Router()
 
@@ -18,4 +19,4 @@ async def _(message: Message):
 
 @router.message()
 async def _(message: Message):
-    await message.answer(text=PHRASES_RU.answers.unknown)
+    await message.answer(text=await format_song_line(message.text), disable_web_page_preview=True)

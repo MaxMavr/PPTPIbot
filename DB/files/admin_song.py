@@ -2,7 +2,7 @@ from typing import Union, Tuple
 from os.path import isfile, getsize, dirname
 import json
 
-DAY_SONG_FILE = f'{dirname(__file__)}/users.json'
+DAY_SONG_FILE = f'{dirname(__file__)}/admin_song.json'
 
 
 def __is_file_exist(path2file: str) -> bool:

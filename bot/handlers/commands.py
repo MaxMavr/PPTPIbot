@@ -4,7 +4,8 @@ from bot.routers import UserRouter, BaseRouter
 from phrases import PHRASES_RU
 
 from utils.music_yandex import get_admin_song, get_random_song_lines
-from utils.format_string import make_song_lyrics_message, make_yandex_song_link
+from utils.format_string import make_song_lyrics_message
+from utils.links import make_yandex_song_link
 
 router = UserRouter()
 

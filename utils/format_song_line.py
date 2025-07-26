@@ -4,24 +4,43 @@ from utils.format_string import make_song_lyrics_message
 from utils.music_yandex import get_song_artist_title_by_song_id
 
 
-async def formatting(lines: str):
-    raw_lines = lines.split('\n')
-    groups = ['\n'.join(group) for is_empty, group in groupby(raw_lines, lambda x: x == '') if not is_empty]
+async def format_song_line(lines: str):
+    groups = ['\n'.join(group) for key, group in groupby(lines.split('\n'), lambda x: x == '') if not key]
 
-    lyrics = groups[0]
-    artist_song = groups[1] if len(groups) > 1 else None
-    link = groups[2] if len(groups) > 2 else None
+    # if len(groups) > 3:
+    #     await message.answer(text=phrases['error']['lot_of_arguments_3'], reply_markup=kb.make_main())
+    #     return
 
-    if link and is_yandex_link(link):
-        _, song_id = take_yandex_song_link(link)
-        song_title, artist_title = await get_song_artist_title_by_song_id(song_id)
-        return make_song_lyrics_message(lines=lyrics, song=song_title, artist=artist_title, link=link)
+    if len(groups) > 3:
+        if is_yandex_link(groups[2]):
+            _, song_id = take_yandex_song_link(groups[2])
+            song_title, artist_title = await get_song_artist_title_by_song_id(song_id)
+            msg_text = make_song_lyrics_message(lines=groups[0],
+                                                song=song_title,
+                                                artist=artist_title,
+                                                link=groups[2])
 
-    elif link and is_link(link):
-        return make_song_lyrics_message(lines=lyrics, artist_song=artist_song, link=link)
+        elif is_link(groups[2]):
+            msg_text = make_song_lyrics_message(lines=groups[0],
+                                                artist_song=groups[1],
+                                                link=groups[2])
+        else:
+            msg_text = make_song_lyrics_message(lines=groups[0],
+                                                artist_song=groups[1])
 
-    elif artist_song:
-        return make_song_lyrics_message(lines=lyrics, artist_song=artist_song)
+    elif len(groups) == 2:
+        if is_yandex_link(groups[1]):
+            _, song_id = take_yandex_song_link(groups[1])
+            song_title, artist_title = await get_song_artist_title_by_song_id(song_id)
+            msg_text = make_song_lyrics_message(lines=groups[0],
+                                                song=song_title,
+                                                artist=artist_title,
+                                                link=groups[1])
+        else:
+            msg_text = make_song_lyrics_message(lines=groups[0],
+                                                artist_song=groups[1])
 
     else:
-        return make_song_lyrics_message(lines=lyrics)
+        msg_text = make_song_lyrics_message(lines=groups[0])
+
+    return msg_text
