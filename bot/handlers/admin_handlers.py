@@ -8,9 +8,8 @@ from bot import command_arguments, pages
 from bot.routers import AdminRouter, BaseRouter
 from utils.music_yandex import get_song_artist_title_by_song_id
 from DB.files.admin_song import upd_admin_song
-import re
+from utils.links import take_yandex_song_link
 
-YANDEX_SONG_ID_PATTERN = r'https://music\.yandex\.ru/album/(\d+)/track/(\d+)'
 
 router = AdminRouter()
 
@@ -35,7 +34,7 @@ async def _(message: Message):
 @router.command('updasong', 'обновить песню «Что слушает админ?»', 'ссылка на Яндекс Музыку')  # /updasong
 @command_arguments.yandex_link
 async def _(message: Message, yandex_link):
-    album_id, song_id = re.search(YANDEX_SONG_ID_PATTERN, yandex_link).groups()
+    album_id, song_id = take_yandex_song_link(yandex_link)
     song_title, artist_title = await get_song_artist_title_by_song_id(song_id)
     upd_admin_song([song_title, artist_title, song_id, album_id])
     await message.answer(PHRASES_RU.success.save_admin_song)
