@@ -1,17 +1,19 @@
 from aiogram.utils.keyboard import ReplyKeyboardMarkup as KMarkup
 from aiogram.utils.keyboard import KeyboardButton as KButton
 from phrases import PHRASES_RU
+import random
 
 
-def __make_placeholder_appeal() -> str:
-    return PHRASES_RU.placeholder_appeal
+def make_main():
+    def __make_placeholder_appeal() -> str:
+        items = PHRASES_RU.placeholder_appeal.items
+        selected_items = random.sample(items, random.randint(1, len(items)))
+        placeholder_appeal = '-'.join(selected_items) + '-' + PHRASES_RU.placeholder_appeal.ending
+        return placeholder_appeal.capitalize()
 
-
-button_1: KButton = KButton(text='Кнопка 1')
-button_2: KButton = KButton(text='Кнопка 2')
-
-keyboard: KMarkup = KMarkup(
-    keyboard=[[button_1], [button_2]],
-    resize_keyboard=True,
-    one_time_keyboard=False,
-    input_field_placeholder=__make_placeholder_appeal())
+    return KMarkup(
+        keyboard=[[KButton(text=PHRASES_RU.button.main.suggest_post),
+                   KButton(text=PHRASES_RU.button.main.admin_song)]],
+        resize_keyboard=True,
+        input_field_placeholder=__make_placeholder_appeal()
+    )
