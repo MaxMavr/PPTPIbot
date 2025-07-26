@@ -2,10 +2,7 @@ from aiogram.types import Message
 from phrases import PHRASES_RU
 from DB.tables.users import UsersTable
 from typing import Optional, Callable
-import re
-
-YANDEX_LINK_PATTERN = r'https://music\.yandex\.ru/album/\d+/track/\d+'
-LINK_PATTERN = r'https://'
+from utils.links import is_link, is_yandex_link
 
 
 def multiple(_func: Optional[Callable] = None, *, default=None):
@@ -49,7 +46,7 @@ def link(func):
     @multiple
     async def wrapper(message: Message, params):
         _link = params[0]
-        if not _link.startswith(LINK_PATTERN):
+        if not is_link(_link):
             return await message.answer(PHRASES_RU.error.not_link)
         return await func(message, _link)
     return wrapper
@@ -57,8 +54,8 @@ def link(func):
 
 def yandex_link(func):
     @link
-    async def wrapper(message: Message, _yandex_link):
-        if not bool(re.search(YANDEX_LINK_PATTERN, _yandex_link)):
+    async def wrapper(message: Message, _link):
+        if not is_yandex_link(_link):
             return await message.answer(PHRASES_RU.error.not_yandex_link)
-        return await func(message, _yandex_link)
+        return await func(message, _link)
     return wrapper
