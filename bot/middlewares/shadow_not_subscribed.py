@@ -27,6 +27,9 @@ class ShadowNotSubscribedMiddleware(BaseMiddleware):
             )
             return await handler(event, data)
 
+        if event.message and event.message.text and event.message.text.startswith('/start'):
+            return await handler(event, data)
+
         member = await bot.get_chat_member(chat_id=CHANNEL_ID, user_id=user_row.user_id)
 
         if member.status in ['member', 'administrator', 'creator']:
