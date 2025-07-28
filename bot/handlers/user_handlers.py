@@ -19,4 +19,7 @@ async def _(message: Message):
 
 @router.message()
 async def _(message: Message):
-    await message.answer(text=await format_song_line(message.text), disable_web_page_preview=True)
+    if message.text:
+        await message.answer(text=await format_song_line(message.text), disable_web_page_preview=True)
+        return
+    await message.answer(text=PHRASES_RU.answers.unknown)
