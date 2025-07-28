@@ -12,12 +12,12 @@ router = UserRouter()
 
 @router.command('start', 'запустить бота')  # /start
 async def _(message: Message):
-    await message.answer(PHRASES_RU.commands.start)
+    await message.answer(PHRASES_RU.commands.start, disable_web_page_preview=True)
 
 
 @router.command('help', 'как пользоваться ботом')  # /help
 async def _(message: Message):
-    await message.answer(PHRASES_RU.commands.help)
+    await message.answer(PHRASES_RU.commands.help, disable_web_page_preview=True)
 
 
 @router.command('about', 'о разработчиках')  # /about
@@ -25,7 +25,7 @@ async def _(message: Message):
     await message.answer(PHRASES_RU.commands.about, disable_web_page_preview=True)
 
 
-@router.command(('commands', 'cmd'), 'список всех команд (это сообщение)')  # /commands
+@router.command('commands', 'список всех команд (это сообщение)')  # /commands
 async def _(message: Message):
     commands_text = '\n'.join(str(command) for command in BaseRouter.available_commands if not command.is_admin)
     await message.answer(PHRASES_RU.title.commands + commands_text)
