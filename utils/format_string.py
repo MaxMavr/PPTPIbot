@@ -23,8 +23,6 @@ def make_song_lyrics_message(lines: str,
     if lines:
         message_parts.append(f'<i>«{clear_string(lines)}»</i>\n\n')
 
-    print(artist_song)
-
     name_part = ''
     if artist_song:
         for sep in [' - ', ' – ', ' — ', ' : ']:

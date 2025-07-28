@@ -7,8 +7,6 @@ from utils.music_yandex import get_song_artist_title_by_song_id
 async def format_song_line(lines: str):
     groups = ['\n'.join(group) for key, group in groupby(lines.split('\n'), lambda x: x == '') if not key]
 
-    print(groups)
-
     if len(groups) >= 3:
         if is_yandex_link(groups[2]):
             _, song_id = take_yandex_song_link(groups[2])
