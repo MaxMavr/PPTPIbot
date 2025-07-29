@@ -1,8 +1,8 @@
-from typing import Union
+from typing import Union, Tuple
 from aiogram.types import InlineKeyboardButton as IButton
 from aiogram.types import InlineKeyboardMarkup as IMarkup
 from phrases import PHRASES_RU
-from bot.models import CutMessageCallBack
+from bot.models import PageCallBack, PostCallBack
 from DB.models import Pagination
 
 
@@ -10,20 +10,41 @@ def page_keyboard(action: int, pagination: Pagination, user_id: int = 0) -> Unio
     if pagination.total_pages <= 1:
         return None
 
-    no_action = CutMessageCallBack(action=-1).pack()
+    no_action = PageCallBack(action=-1).pack()
 
     past_button = IButton(
         text=PHRASES_RU.button.past_page,
-        callback_data=CutMessageCallBack(action=action, page=pagination.page - 1, user_id=user_id).pack()
+        callback_data=PageCallBack(action=action, page=pagination.page - 1, user_id=user_id).pack()
     ) if pagination.page > 1 else IButton(text=' ', callback_data=no_action)
 
     next_button = IButton(
         text=PHRASES_RU.button.next_page,
-        callback_data=CutMessageCallBack(action=action, page=pagination.page + 1, user_id=user_id).pack()
+        callback_data=PageCallBack(action=action, page=pagination.page + 1, user_id=user_id).pack()
     ) if pagination.page < pagination.total_pages else IButton(text=' ', callback_data=no_action)
 
     return IMarkup(inline_keyboard=[[
         past_button,
-        IButton(text=f'{pagination.page}{PHRASES_RU.icon.page_separator}{pagination.total_pages}', callback_data=no_action),
+        IButton(text=f'{pagination.page}{PHRASES_RU.icon.page_separator}{pagination.total_pages}',
+                callback_data=no_action),
         next_button
     ]])
+
+
+def suggest_post(chat_id: int, message_id: int) -> IMarkup:
+    return IMarkup(inline_keyboard=[[IButton(
+        text=PHRASES_RU.button.suggest_post,
+        callback_data=PostCallBack(action=1, chat_id=chat_id, message_id=message_id).pack())]])
+
+
+publish_post = IMarkup(inline_keyboard=[[IButton(
+    text=PHRASES_RU.button.publish_post,
+    callback_data=PostCallBack(action=2).pack())]])
+
+
+def approval_post(chat_id: int, message_id: int) -> IMarkup:
+    return IMarkup(inline_keyboard=[
+        [IButton(text=PHRASES_RU.button.publish_post,
+                 callback_data=PostCallBack(action=2, chat_id=chat_id, message_id=message_id).pack()),
+         IButton(text=PHRASES_RU.button.reject_post,
+                 callback_data=PostCallBack(action=-1).pack())
+         ]])

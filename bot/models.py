@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Tuple, Optional, Any, Union
+from typing import Tuple, Optional, Any
 from aiogram.filters.callback_data import CallbackData
 
 
@@ -23,7 +23,13 @@ class CommandUnit:
         return base
 
 
-class CutMessageCallBack(CallbackData, prefix='cut'):
+class PageCallBack(CallbackData, prefix='page'):
     action: int
     user_id: int = 0
     page: int = 1
+
+
+class PostCallBack(CallbackData, prefix='post'):
+    action: int
+    chat_id: Optional[int] = None
+    message_id: Optional[int] = None

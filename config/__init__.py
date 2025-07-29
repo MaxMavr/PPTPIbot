@@ -27,6 +27,7 @@ class LogConfig:
 class TgBot:
     token: str
     password: str
+    main_admin_id: str
     message_max_symbols: int = 400
 
 
@@ -49,7 +50,8 @@ def load_config() -> Config:
     return Config(
         tg_bot=TgBot(
             token=os.getenv('BOT_TOKEN'),
-            password=os.getenv('PASSWORD')
+            password=os.getenv('PASSWORD'),
+            main_admin_id=os.getenv('MAIN_ADMIN_ID')
         ),
         yandex_music=YandexMusic(os.getenv('YANDEX_TOKEN')),
         log=LogConfig(
