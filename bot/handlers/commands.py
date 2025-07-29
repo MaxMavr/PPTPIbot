@@ -25,6 +25,11 @@ async def _(message: Message):
     await message.answer(PHRASES_RU.commands.about, disable_web_page_preview=True)
 
 
+@router.command('playlist', 'плейлисты канала')  # /playlist
+async def _(message: Message):
+    await message.answer(PHRASES_RU.commands.playlist, disable_web_page_preview=True)
+
+
 @router.command('commands', 'список всех команд (это сообщение)')  # /commands
 async def _(message: Message):
     commands_text = '\n'.join(str(command) for command in BaseRouter.available_commands if not command.is_admin)
