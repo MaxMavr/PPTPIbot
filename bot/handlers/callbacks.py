@@ -2,7 +2,7 @@ from aiogram import Router
 from aiogram.types import CallbackQuery
 from bot.models import PageCallBack, PostCallBack
 from bot import pages
-from bot import channel
+from bot.chat_type_handlers import channel
 
 router = Router()
 
