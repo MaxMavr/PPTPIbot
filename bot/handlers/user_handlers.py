@@ -12,6 +12,7 @@ router = Router()
 async def _(message: Message):
     with UsersTable() as users_db:
         if users_db.set_admin(message.from_user.id, message.from_user.id):
+            await message.delete()
             await message.answer(PHRASES_RU.success.promoted)
         else:
             await message.answer(PHRASES_RU.error.db)
