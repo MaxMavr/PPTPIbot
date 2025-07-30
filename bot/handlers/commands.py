@@ -6,6 +6,7 @@ from phrases import PHRASES_RU
 from utils.music_yandex import get_admin_song, get_random_song_lines
 from utils.format_string import make_song_lyrics_message
 from utils.links import make_yandex_song_link
+from bot.keyboards import inline_keyboards as ikb
 
 router = UserRouter()
 
@@ -17,7 +18,7 @@ async def _(message: Message):
 
 @router.command('help', 'как пользоваться ботом')  # /help
 async def _(message: Message):
-    await message.answer(PHRASES_RU.commands.help, disable_web_page_preview=True)
+    await message.answer(PHRASES_RU.commands.help, disable_web_page_preview=True, reply_markup=ikb.help_examples)
 
 
 @router.command('about', 'о разработчиках')  # /about

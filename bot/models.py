@@ -33,3 +33,7 @@ class PostCallBack(CallbackData, prefix='post'):
     action: int
     chat_id: Optional[int] = None
     message_id: Optional[int] = None
+
+
+class HelpCallBack(CallbackData, prefix='help'):
+    action: int

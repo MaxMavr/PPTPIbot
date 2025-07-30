@@ -2,7 +2,7 @@ from typing import Union, Tuple
 from aiogram.types import InlineKeyboardButton as IButton
 from aiogram.types import InlineKeyboardMarkup as IMarkup
 from phrases import PHRASES_RU
-from bot.models import PageCallBack, PostCallBack
+from bot.models import PageCallBack, PostCallBack, HelpCallBack
 from DB.models import Pagination
 
 
@@ -48,3 +48,10 @@ def approval_post(chat_id: int, message_id: int) -> IMarkup:
          IButton(text=PHRASES_RU.button.reject_post,
                  callback_data=PostCallBack(action=-1).pack())
          ]])
+
+
+help_examples = IMarkup(inline_keyboard=[[
+    IButton(text=PHRASES_RU.button.help_examples.example1, callback_data=HelpCallBack(action=1).pack()),
+    IButton(text=PHRASES_RU.button.help_examples.example2, callback_data=HelpCallBack(action=2).pack()),
+    IButton(text=PHRASES_RU.button.help_examples.example3, callback_data=HelpCallBack(action=3).pack())
+]])

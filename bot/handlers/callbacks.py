@@ -1,8 +1,9 @@
 from aiogram import Router
 from aiogram.types import CallbackQuery
-from bot.models import PageCallBack, PostCallBack
+from bot.models import PageCallBack, PostCallBack, HelpCallBack
 from bot import pages
 from bot.chat_type_handlers import channel
+from phrases import PHRASES_RU
 
 router = Router()
 
@@ -32,3 +33,21 @@ async def cut_message_distributor(callback: CallbackQuery, callback_data: PostCa
         await channel.publish_post(callback, chat_id, message_id)
     elif action == -1:
         await channel.reject_post(callback)
+
+
+@router.callback_query(HelpCallBack.filter())
+async def cut_message_distributor(callback: CallbackQuery, callback_data: PostCallBack):
+    action = callback_data.action
+
+    if action == 1:
+        await callback.answer(PHRASES_RU.callback.help_examples.example1, disable_web_page_preview=True)
+        await callback.message.answer(PHRASES_RU.help_examples.exemple1.request, disable_web_page_preview=True)
+        await callback.message.answer(PHRASES_RU.help_examples.exemple1.response, disable_web_page_preview=True)
+    elif action == 2:
+        await callback.answer(PHRASES_RU.callback.help_examples.example2, disable_web_page_preview=True)
+        await callback.message.answer(PHRASES_RU.help_examples.exemple2.request, disable_web_page_preview=True)
+        await callback.message.answer(PHRASES_RU.help_examples.exemple2.response, disable_web_page_preview=True)
+    elif action == 3:
+        await callback.answer(PHRASES_RU.callback.help_examples.example3, disable_web_page_preview=True)
+        await callback.message.answer(PHRASES_RU.help_examples.exemple3.request, disable_web_page_preview=True)
+        await callback.message.answer(PHRASES_RU.help_examples.exemple3.response, disable_web_page_preview=True)
