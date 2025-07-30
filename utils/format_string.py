@@ -14,14 +14,14 @@ def get_query_count_emoji(count: int) -> str:
     return PHRASES_RU.icon.query.default
 
 
-def make_song_lyrics_message(lines: str,
+def make_song_lyrics_message(lyrics: str,
                              artist_song: str = None, song: str = None, artist: str = None,
                              link: str = None
                              ) -> str:
     message_parts = []
 
-    if lines:
-        message_parts.append(f'<i>«{clear_string(lines)}»</i>\n\n')
+    if lyrics:
+        message_parts.append(f'<i>«{clear_string(lyrics)}»</i>\n\n')
 
     name_part = ''
     if artist_song:

@@ -5,7 +5,7 @@ YANDEX_SONG_ID_PATTERN = r'https://music\.yandex\.ru/album/(\d+)/track/(\d+)'
 LINK_PATTERN = r'https://'
 
 
-def take_yandex_song_link(link: str) -> (str, str):
+def parse_yandex_music_link(link: str) -> (str, str):
     return re.search(YANDEX_SONG_ID_PATTERN, link).groups()
 
 
