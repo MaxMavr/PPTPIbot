@@ -41,7 +41,7 @@ def make_song_lyrics_message(lyrics: str,
     elif song:
         name_part = song
 
-    if link and name_part:
+    if name_part and link:
         message_parts.append(f'<a href="{link}">{clear_string(name_part)}</a>')
 
     return ''.join(message_parts)
