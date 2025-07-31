@@ -1,8 +1,8 @@
 from aiogram.types import Message
-from bot.filters import EditFilter
+from bot.bot_utils.filters import EditFilter
 from phrases import PHRASES_RU
 from utils.format_song_line import format_song_line
-from bot.keyboards import inline_keyboards as ikb
+from bot.keyboards import inline as ikb
 
 
 async def handler(message: Message):

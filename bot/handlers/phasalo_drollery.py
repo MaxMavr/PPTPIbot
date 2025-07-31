@@ -1,6 +1,6 @@
 from aiogram.types import Message
 from aiogram import Router, F
-from bot.handlers.commands import cmd_admin_song
+from bot.handlers import default
 from phrases import PHRASES_RU
 
 router = Router()
@@ -13,4 +13,4 @@ async def _(message: Message):
 
 @router.message(F.text.lower().in_(['мяу', 'мау', 'мив', 'мав']))
 async def _(message: Message):
-    await cmd_admin_song(message)
+    await default.cmd_admin_song(message)

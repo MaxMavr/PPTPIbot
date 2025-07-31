@@ -3,7 +3,7 @@ from typing import Optional
 from aiogram.types import CallbackQuery
 from config.const import CHANNEL_ID
 from config import bot, config
-from bot.keyboards import inline_keyboards as ikb
+from bot.keyboards import inline as ikb
 from phrases import PHRASES_RU
 
 

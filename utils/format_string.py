@@ -14,7 +14,7 @@ def get_query_count_emoji(count: int) -> str:
     return PHRASES_RU.icon.query.default
 
 
-def make_song_lyrics_message(lyrics: str,
+def make_song_lyrics_message(lyrics: str = None,
                              artist_song: str = None, song: str = None, artist: str = None,
                              link: str = None
                              ) -> str:

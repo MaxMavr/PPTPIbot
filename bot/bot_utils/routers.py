@@ -3,8 +3,8 @@ from aiogram import Router
 from aiogram.filters import Command
 from aiogram.types import Message
 
-from bot.filters import AdminFilter
-from bot.models import CommandUnit
+from bot.bot_utils.filters import AdminFilter
+from bot.bot_utils.models import CommandUnit
 
 
 class BaseRouter(Router):
@@ -21,7 +21,7 @@ class BaseRouter(Router):
             commands = (command,) if isinstance(command, str) else command
             self.available_commands.append(CommandUnit(commands[0], commands[1:], description, self.is_admin, placeholders if placeholders else None))
 
-            @self.message(Command(*commands))
+            @self.message(Command(*commands, ignore_case=True))
             async def wrapper(message: Message):
                 await handler(message)
 

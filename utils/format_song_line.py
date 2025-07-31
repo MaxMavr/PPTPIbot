@@ -37,10 +37,4 @@ async def format_song_line(lines: str) -> str:
         lyrics = artist_song
         artist_song = None
 
-    print(f'{lyrics =}')
-    print(f'{artist_song =}')
-    print(f'{song =}')
-    print(f'{artist =}')
-    print(f'{link =}')
-
     return make_song_lyrics_message(lyrics=lyrics, artist_song=artist_song, song=song, artist=artist, link=link)

@@ -23,8 +23,8 @@ class CommandUnit:
         return base
 
 
-class PageCallBack(CallbackData, prefix='page'):
-    action: int
+class PageCallBack(CallbackData, prefix='cut'):
+    type_of_event: int
     user_id: int = 0
     page: int = 1
 

@@ -126,11 +126,13 @@ success:
   promoted: "Теперь Вы администратор"
   banned: "Пользователь <i>{user_id}</i> успешно заблокирован"
   unbanned: "Пользователь <i>{user_id}</i> успешно разблокирован"
-  save_admin_song: "Установил песню для «Что слушает админ?»"
+  save_admin_song: "Установил песню\n{song}\nдля «Что слушает админ?» /admin_song"
   publish_post: "Опубликовал!"
   suggest_post: "Отправил админу, надеюсь примет…"
+  clear_temp: "Временные файлы очищены"
 
 error:
+  clear_temp: "Ошибка со стороны удалятеля"
   not_subscribed: |
     Ты не подписчик <a href="https://t.me/post_pop_trah_punk_indie">Пост-поп-трах-панк-инди</a> (._.)
     
