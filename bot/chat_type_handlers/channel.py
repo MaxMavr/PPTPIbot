@@ -1,6 +1,8 @@
 from typing import Optional
 
 from aiogram.types import CallbackQuery
+
+from bot.bot_utils.filters import EditFilter
 from config.const import CHANNEL_ID
 from config import bot, config
 from bot.keyboards import inline as ikb
@@ -18,7 +20,12 @@ async def reject_post(callback: CallbackQuery):
 
 async def publish_post(callback: CallbackQuery, chat_id: Optional[int] = None, message_id: Optional[int] = None):
     await __clear_callback(callback)
-    msg_text = callback.message.text + f'\n\nОт @{callback.from_user.username}'
+
+    if not await EditFilter.check(callback.from_user.id):
+        msg_text = callback.message.text + f'\n\nОт @{callback.from_user.username}'
+    else:
+        msg_text = callback.message.text
+
     await bot.send_message(chat_id=CHANNEL_ID, text=msg_text)
     await callback.message.answer(text=PHRASES_RU.success.publish_post)
 
