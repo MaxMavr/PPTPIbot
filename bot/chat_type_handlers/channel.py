@@ -16,6 +16,7 @@ async def __clear_callback(callback: CallbackQuery):
 
 async def reject_post(callback: CallbackQuery):
     await __clear_callback(callback)
+    # TODO: Сделать оповещение, что мы не выложили пост
 
 
 async def publish_post(callback: CallbackQuery, chat_id: Optional[int] = None, message_id: Optional[int] = None):
@@ -36,8 +37,10 @@ async def publish_post(callback: CallbackQuery, chat_id: Optional[int] = None, m
 
 
 async def suggest_post(callback: CallbackQuery, chat_id: int, message_id: int):
+    # TODO: Предложить выложить анонимно
     await __clear_callback(callback)
-    await bot.send_message(chat_id=config.tg_bot.main_admin_id, text=f'От @{callback.from_user.username}')
+    await bot.send_message(chat_id=config.tg_bot.main_admin_id,
+                           text=PHRASES_RU.replace('template.from_user', username=callback.from_user.username))
     await callback.message.copy_to(chat_id=config.tg_bot.main_admin_id,
                                    disable_web_page_preview=True,
                                    reply_markup=ikb.approval_post(chat_id, message_id))

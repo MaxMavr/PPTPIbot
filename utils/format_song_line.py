@@ -22,7 +22,7 @@ async def format_song_line(lines: str) -> str:
             break
 
     for line in clear_lines:
-        if not (song and artist) or artist_song:
+        if not (song and artist) or artist_song or is_link(line):
             for sep in [' - ', ' – ', ' — ', ' : ']:
                 if sep in line:
                     artist_song = line

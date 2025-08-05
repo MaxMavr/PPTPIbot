@@ -182,6 +182,7 @@ info:
   no_query: "Запросов не было"
 
 template:
+  from_user: "<a href=\"https://t.me/pptpibot\">Предложка</a> от @{username}"
   user: "<code>{user_id}</code>{username} <i>{registration_date}</i> {query_stat}\n"
   user_query: "<blockquote>{time}</blockquote> <i>{query}</i>\n\n"
   all_queries: "{username} <blockquote>{time}</blockquote> <i>{query}</i>\n\n"
