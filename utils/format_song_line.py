@@ -11,23 +11,24 @@ async def format_song_line(lines: str) -> str:
     artist = None
     link = None
 
-    for line in lines.split('\n'):
-        line = line.strip()
+    clear_lines = [l.strip() for l in lines.split('\n') if l.strip()]
 
-        if line == '':
-            continue
-
+    for line in clear_lines:
         if is_link(line):
-            if is_yandex_link(line):
-                _, song_id = parse_yandex_music_link(line)
-                song, artist = await get_song_artist_title_by_song_id(song_id)
             link = line
-            continue
+            if is_yandex_link(link):
+                _, song_id = parse_yandex_music_link(link)
+                song, artist = await get_song_artist_title_by_song_id(song_id)
+            break
 
-        for sep in [' - ', ' – ', ' — ', ' : ']:
-            if sep in line:
-                artist_song = line
-                break
+    for line in clear_lines:
+        if not (song and artist) or artist_song:
+            for sep in [' - ', ' – ', ' — ', ' : ']:
+                if sep in line:
+                    artist_song = line
+                    break
+            else:
+                lyrics_parts.append(line)
         else:
             lyrics_parts.append(line)
 
