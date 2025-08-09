@@ -31,8 +31,9 @@ class PageCallBack(CallbackData, prefix='cut'):
 
 class PostCallBack(CallbackData, prefix='post'):
     action: int
-    chat_id: Optional[int] = None
+    user_id: Optional[int] = None
     message_id: Optional[int] = None
+    anonymous: Optional[bool] = False
 
 
 class HelpCallBack(CallbackData, prefix='help'):

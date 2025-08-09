@@ -13,7 +13,7 @@ async def handler(message: Message):
         if await EditFilter.check(message.from_user.id):
             await message.answer(text=await format_song_line(message.text),
                                  disable_web_page_preview=True,
-                                 reply_markup=ikb.publish_post)
+                                 reply_markup=ikb.publish_post(message.from_user.id))
         else:
             await message.answer(text=await format_song_line(message.text),
                                  disable_web_page_preview=True,

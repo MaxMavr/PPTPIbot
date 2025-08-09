@@ -24,15 +24,12 @@ async def cut_message_distributor(callback: CallbackQuery, callback_data: PageCa
 @router.callback_query(PostCallBack.filter())
 async def cut_message_distributor(callback: CallbackQuery, callback_data: PostCallBack):
     action = callback_data.action
-    chat_id = callback_data.chat_id
-    message_id = callback_data.message_id
-
     if action == 1:
-        await channel.suggest_post(callback, callback.from_user.id, callback.message.message_id)
+        await channel.suggest_post(callback, callback_data.user_id, callback.message.message_id, callback_data.anonymous)
     elif action == 2:
-        await channel.publish_post(callback, chat_id, message_id)
+        await channel.publish_post(callback, callback_data.user_id, callback_data.message_id, callback_data.anonymous)
     elif action == -1:
-        await channel.reject_post(callback)
+        await channel.reject_post(callback, callback_data.user_id, callback_data.message_id)
 
 
 @router.callback_query(HelpCallBack.filter())

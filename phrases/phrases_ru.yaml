@@ -107,6 +107,7 @@ button:
   next_page: "»"
   past_page: "«"
   suggest_post: "Предложить пост"
+  anonymous_suggest_post: "Предложить анонимно"
   publish_post: "Опубликовать"
   reject_post: "Отклонить"
   help_examples:
@@ -128,6 +129,7 @@ success:
   unbanned: "Пользователь <i>{user_id}</i> успешно разблокирован"
   save_admin_song: "Установил песню\n{song}\nдля «Что слушает админ?» /admin_song"
   publish_post: "Опубликовал!"
+  not_publish_post: "Прости, не выложили…\nТо ли с оформлением косяк, то ли просто не понравилось (._.)"
   suggest_post: "Отправил админу, надеюсь примет…"
   clear_temp: "Временные файлы очищены"
 
@@ -180,9 +182,11 @@ icon:
 
 info:
   no_query: "Запросов не было"
+  from_user: "\n\n<a href=\"https://t.me/pptpibot\">Предложка</a>"
 
 template:
-  from_user: "<a href=\"https://t.me/pptpibot\">Предложка</a> от @{username}"
+  from_user: "\n\n<a href=\"https://t.me/pptpibot\">Предложка</a> от @{username}"
   user: "<code>{user_id}</code>{username} <i>{registration_date}</i> {query_stat}\n"
+  user_info: "<code>{user_id}</code>{username} <i>{registration_date}</i>"
   user_query: "<blockquote>{time}</blockquote> <i>{query}</i>\n\n"
   all_queries: "{username} <blockquote>{time}</blockquote> <i>{query}</i>\n\n"
