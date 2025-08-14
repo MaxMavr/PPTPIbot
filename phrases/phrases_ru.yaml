@@ -165,12 +165,11 @@ subtitle:
 footnote:
   inline: "Всё готово — теперь красиво"
   total: "\n<i>{total} всего</i>\n\n"
-  user_query: "\n<i>пользователя {username}</i>\n\n"
+  user_query: "\n<i>пользователя <a href=\"tg://user?id={user_id}\">{username}</a></i>\n\n"
   all_queries: "\n\n"
 
 icon:
   not_username: "—"
-  page_separator: " из "
   row_placeholder: "<code>.</code>\n"
   query:
     thresholds:
@@ -185,8 +184,9 @@ info:
   from_user: "\n\n<a href=\"https://t.me/pptpibot\">Предложка</a>"
 
 template:
+  page_counter: "{current} из {total}"
+  user: "<code>{user_id}</code><a href=\"tg://user?id={user_id}\">{username}</a>  <i>{registration_date}</i> {query_stat}\n"
   from_user: "\n\n<a href=\"https://t.me/pptpibot\">Предложка</a> от @{username}"
-  user: "<code>{user_id}</code>{username} <i>{registration_date}</i> {query_stat}\n"
   user_info: "<code>{user_id}</code>{username} <i>{registration_date}</i>"
   user_query: "<blockquote>{time}</blockquote> <i>{query}</i>\n\n"
-  all_queries: "{username} <blockquote>{time}</blockquote> <i>{query}</i>\n\n"
+  all_queries: "<a href=\"tg://user?id={user_id}\">{username}</a> <blockquote>{time}</blockquote> <i>{query}</i>\n\n"

@@ -11,7 +11,6 @@ from phrases import PHRASES_RU
 
 
 async def __clear_callback(callback: CallbackQuery):
-    await callback.answer()
     await callback.message.edit_reply_markup(reply_markup=None)
 
 

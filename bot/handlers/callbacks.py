@@ -10,30 +10,41 @@ router = Router()
 
 @router.callback_query(PageCallBack.filter())
 async def cut_message_distributor(callback: CallbackQuery, callback_data: PageCallBack):
+    await callback.answer()
+
     type_of_event = callback_data.type_of_event
     page = callback_data.page
     user_id = callback_data.user_id
+
     if type_of_event == 1:
         await pages.get_users(callback.from_user.id, page, callback.message.message_id)
     elif type_of_event == 2:
         await pages.user_query(callback.from_user.id, user_id, page, callback.message.message_id)
     elif type_of_event == -1:
-        await callback.answer()
+        pass
 
 
 @router.callback_query(PostCallBack.filter())
 async def cut_message_distributor(callback: CallbackQuery, callback_data: PostCallBack):
+    await callback.answer()
+
     action = callback_data.action
+    user_id = callback_data.user_id
+    message_id = callback_data.message_id
+    anonymous = callback_data.anonymous
+
     if action == 1:
-        await channel.suggest_post(callback, callback_data.user_id, callback.message.message_id, callback_data.anonymous)
+        await channel.suggest_post(callback, user_id, callback.message.message_id, anonymous)
     elif action == 2:
-        await channel.publish_post(callback, callback_data.user_id, callback_data.message_id, callback_data.anonymous)
+        await channel.publish_post(callback, user_id, message_id, anonymous)
     elif action == -1:
-        await channel.reject_post(callback, callback_data.user_id, callback_data.message_id)
+        await channel.reject_post(callback, user_id, message_id)
 
 
 @router.callback_query(HelpCallBack.filter())
 async def cut_message_distributor(callback: CallbackQuery, callback_data: PostCallBack):
+    await callback.answer()
+
     action = callback_data.action
 
     examples = {
