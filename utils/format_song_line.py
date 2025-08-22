@@ -18,7 +18,7 @@ async def format_song_line(lines: str) -> str:
         if is_link(line):
             link = line
             if is_yandex_link(link):
-                _, song_id = parse_yandex_music_link(link)
+                song_id = parse_yandex_music_link(link)
                 song, artist = await get_song_artist_title_by_song_id(song_id)
         else:
             clear_not_link_lines.append(line)

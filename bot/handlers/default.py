@@ -40,10 +40,10 @@ async def _(message: Message):
 @router.command('admin_song', 'получить песню, которую сейчас слушает админ')  # /admin_song
 async def cmd_admin_song(message: Message):
     async with ChatActionSender.typing(bot=bot, chat_id=message.chat.id):
-        song, artists, song_id, album_id = await get_admin_song()
+        song, artists, song_id = await get_admin_song()
         lyrics = await get_random_song_lines(song_id)
         msg_text = make_song_lyrics_message(song=song, artist=artists,
-                                            link=make_yandex_song_link(song_id, album_id), lyrics=lyrics)
+                                            link=make_yandex_song_link(song_id), lyrics=lyrics)
 
         await message.answer(text=msg_text, disable_web_page_preview=True)
 

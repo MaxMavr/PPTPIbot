@@ -21,11 +21,11 @@ def __read_json(path2file: str) -> Union[list, dict]:
         return json.load(file)
 
 
-def read_admin_song() -> Tuple[str, str, str, str]:
+def read_admin_song() -> Tuple[str, str, str]:
     if not __is_file_exist(DAY_SONG_FILE):
-        return ' ', ' ', ' ', ' '
+        return ' ', ' ', ' '
     return tuple(__read_json(DAY_SONG_FILE))
 
 
-def upd_admin_song(day_song: list):
-    __make_json(DAY_SONG_FILE, day_song)
+def upd_admin_song(day_song: Tuple[str, str, str]):
+    __make_json(DAY_SONG_FILE, list(day_song))

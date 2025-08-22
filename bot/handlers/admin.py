@@ -38,11 +38,10 @@ async def command_getcmds(message: Message):
 @router.command('updasong', 'обновить песню «Что слушает админ?»', 'ссылка на Яндекс Музыку')  # /updasong
 @command_arguments.yandex_link
 async def _(message: Message, yandex_link):
-    album_id, song_id = parse_yandex_music_link(yandex_link)
+    song_id = parse_yandex_music_link(yandex_link)
     song, artists = await get_song_artist_title_by_song_id(song_id)
-    upd_admin_song([song, artists, song_id, album_id])
-    msg_song_text = make_song_lyrics_message(song=song, artist=artists,
-                                             link=make_yandex_song_link(song_id, album_id), lyrics=None)
+    upd_admin_song((song, artists, song_id))
+    msg_song_text = make_song_lyrics_message(song=song, artist=artists, link=make_yandex_song_link(song_id))
 
     await message.answer(PHRASES_RU.replace('success.save_admin_song',
                                             song=msg_song_text),

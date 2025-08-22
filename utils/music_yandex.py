@@ -102,14 +102,14 @@ async def __fetch_ynison(session):
         return json.loads(recv.data)
 
 
-async def __song_from_ynison() -> Optional[Tuple[str, str, str, str]]:
+async def __song_from_ynison() -> Optional[Tuple[str, str, str]]:
     try:
         async with aiohttp.ClientSession() as session:
             ynison = await __fetch_ynison(session)
             track = ynison['player_state']['player_queue']['playable_list'][ynison['player_state']['player_queue']['current_playable_index']]
             song = (await __client.tracks(track['playable_id']))[0]
             artists_title = ', '.join(artist.name for artist in song.artists)
-            return song.title, artists_title, str(song.id), str(song.albums[0].id)
+            return song.title, artists_title, str(song.id)
     except Exception as e:
         print(e)
         return
@@ -131,11 +131,11 @@ async def __get_song_lyrics(song_id) -> Optional[str]:
 #     return save_path
 
 
-async def get_admin_song() -> Tuple[str, str, str, str]:
+async def get_admin_song() -> Tuple[str, str, str]:
     song = await __song_from_ynison()
 
     if song:
-        upd_admin_song(list(song))
+        upd_admin_song(song)
         return song
 
     return read_admin_song()

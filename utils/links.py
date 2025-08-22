@@ -1,16 +1,28 @@
 import re
+from typing import Optional
 
-YANDEX_LINK_PATTERN = r'https://music\.yandex\.ru/album/\d+/track/\d+'
-YANDEX_SONG_ID_PATTERN = r'https://music\.yandex\.ru/album/(\d+)/track/(\d+)'
+YANDEX_LINK_PATTERN = (
+    r"(?:https://music\.yandex\.ru/album/\d+/track/\d+)"
+    r"|(?:https://music\.yandex\.ru/track/\d+)"
+)
+
+YANDEX_SONG_ID_PATTERN = (
+    r"(?:https://music\.yandex\.ru/album/(\d+)/track/(\d+))"
+    r"|(?:https://music\.yandex\.ru/track/(\d+))"
+)
 LINK_PATTERN = r'https://'
 
 
-def parse_yandex_music_link(link: str) -> (str, str):
-    return re.search(YANDEX_SONG_ID_PATTERN, link).groups()
+def parse_yandex_music_link(link: str) -> str:
+    m = re.search(YANDEX_SONG_ID_PATTERN, link)
+    if m.group(1) and m.group(2):
+        return m.group(2)
+    else:
+        return m.group(3)
 
 
-def make_yandex_song_link(song_id: str, album_id: str) -> str:
-    return f'https://music.yandex.ru/album/{album_id}/track/{song_id}'
+def make_yandex_song_link(song_id: str) -> str:
+    return f'https://music.yandex.ru/track/{song_id}'
 
 
 def is_yandex_link(link: str) -> bool:
