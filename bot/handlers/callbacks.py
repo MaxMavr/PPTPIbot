@@ -4,6 +4,7 @@ from bot.bot_utils.models import PageCallBack, PostCallBack, HelpCallBack
 from bot import pages
 from bot.chat_type_handlers import channel
 from phrases import PHRASES_RU
+from utils.format_song_line import format_song_line
 
 router = Router()
 
@@ -48,16 +49,13 @@ async def cut_message_distributor(callback: CallbackQuery, callback_data: PostCa
     action = callback_data.action
 
     examples = {
-        1: PHRASES_RU.help_examples.exemple1,
-        2: PHRASES_RU.help_examples.exemple2,
-        3: PHRASES_RU.help_examples.exemple3
+        1: (PHRASES_RU.callback.help_examples.example1, PHRASES_RU.help_examples.exemple1),
+        2: (PHRASES_RU.callback.help_examples.example2, PHRASES_RU.help_examples.exemple2),
+        3: (PHRASES_RU.callback.help_examples.example3, PHRASES_RU.help_examples.exemple3),
     }
 
     if action in examples:
         example = examples[action]
-        await callback.answer(
-            getattr(PHRASES_RU.callback.help_examples, f"example{action}"),
-            disable_web_page_preview=True
-        )
-        await callback.message.answer(example.request, disable_web_page_preview=True)
-        await callback.message.answer(example.response, disable_web_page_preview=True)
+        await callback.answer(example[0], disable_web_page_preview=True)
+        await callback.message.answer(example[1], disable_web_page_preview=True)
+        await callback.message.answer(await format_song_line(example[1]), disable_web_page_preview=True)
