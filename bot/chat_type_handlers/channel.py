@@ -14,6 +14,10 @@ async def __clear_callback(callback: CallbackQuery):
     await callback.message.edit_reply_markup(reply_markup=None)
 
 
+async def cancel_post(callback: CallbackQuery):
+    await __clear_callback(callback)
+
+
 async def reject_post(callback: CallbackQuery, user_id: int, message_id: int):
     await __clear_callback(callback)
     await bot.send_message(reply_to_message_id=message_id, chat_id=user_id, text=PHRASES_RU.success.not_publish_post)

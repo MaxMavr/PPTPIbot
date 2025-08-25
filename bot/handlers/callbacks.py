@@ -40,6 +40,8 @@ async def cut_message_distributor(callback: CallbackQuery, callback_data: PostCa
         await channel.publish_post(callback, user_id, message_id, anonymous)
     elif action == -1:
         await channel.reject_post(callback, user_id, message_id)
+    elif action == -2:
+        await channel.cancel_post(callback)
 
 
 @router.callback_query(HelpCallBack.filter())

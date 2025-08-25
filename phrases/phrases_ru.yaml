@@ -96,6 +96,7 @@ button:
   suggest_post: "Предложить пост"
   anonymous_suggest_post: "Предложить анонимно"
   publish_post: "Опубликовать"
+  cancel_post: "Отменить"
   reject_post: "Отклонить"
   help_examples:
     example1: "— 1 —"

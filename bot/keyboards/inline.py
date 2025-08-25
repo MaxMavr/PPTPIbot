@@ -43,14 +43,19 @@ def suggest_post(user_id: int, message_id: int) -> IMarkup:
 
 
 def publish_post(user_id: int) -> IMarkup:
-    return IMarkup(inline_keyboard=[[IButton(text=PHRASES_RU.button.publish_post,
-                                             callback_data=PostCallBack(action=2, user_id=user_id).pack())]])
+    return IMarkup(inline_keyboard=[[
+        IButton(text=PHRASES_RU.button.publish_post,
+                callback_data=PostCallBack(action=2, user_id=user_id).pack()),
+        IButton(text=PHRASES_RU.button.cancel_post,
+                callback_data=PostCallBack(action=-2, user_id=user_id).pack())
+    ]])
 
 
 def approval_post(user_id: int, message_id: int, anonymous: bool) -> IMarkup:
     return IMarkup(inline_keyboard=[
         [IButton(text=PHRASES_RU.button.publish_post,
-                 callback_data=PostCallBack(action=2, user_id=user_id, message_id=message_id, anonymous=anonymous).pack()),
+                 callback_data=PostCallBack(action=2, user_id=user_id, message_id=message_id,
+                                            anonymous=anonymous).pack()),
          IButton(text=PHRASES_RU.button.reject_post,
                  callback_data=PostCallBack(action=-1, user_id=user_id, message_id=message_id).pack())
          ]])
