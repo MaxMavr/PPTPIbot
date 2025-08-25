@@ -21,12 +21,12 @@ async def _(message: Message):
     await message.answer(PHRASES_RU.commands.start)
 
 
-@router.command('help', 'как пользоваться ботом')  # /help
+@router.command(('help', 'h'), 'как пользоваться ботом')  # /help
 async def _(message: Message):
-    await message.answer(PHRASES_RU.commands.help, reply_markup=ikb.help_examples)
+    await message.answer(PHRASES_RU.commands.help, reply_markup=ikb.help_examples, disable_web_page_preview=True)
 
 
-@router.command('about', 'о разработчиках')  # /about
+@router.command(('about', 'a'), 'о разработчиках')  # /about
 async def _(message: Message):
     await message.answer(PHRASES_RU.commands.about, disable_web_page_preview=True)
 
@@ -37,7 +37,7 @@ async def _(message: Message):
     await message.answer(PHRASES_RU.title.commands + commands_text)
 
 
-@router.command('admin_song', 'получить песню, которую сейчас слушает админ')  # /admin_song
+@router.command(('admin_song', 'as'), 'получить песню, которую сейчас слушает админ')  # /admin_song
 async def cmd_admin_song(message: Message):
     async with ChatActionSender.typing(bot=bot, chat_id=message.chat.id):
         song, artists, song_id = await get_admin_song()
@@ -46,6 +46,11 @@ async def cmd_admin_song(message: Message):
                                             link=make_yandex_song_link(song_id), lyrics=lyrics)
 
         await message.answer(text=msg_text, disable_web_page_preview=True)
+
+
+@router.command(('playlist', 'playlists', 'p'), 'список плейлистов канала')  # /playlist
+async def _(message: Message):
+    await message.answer(PHRASES_RU.commands.playlist, disable_web_page_preview=True)
 
 
 @router.message(F.text == config.tg_bot.password)
