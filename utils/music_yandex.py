@@ -1,12 +1,29 @@
+from dataclasses import dataclass
+from pprint import pprint
+
 import aiohttp
 from yandex_music import ClientAsync
-from typing import Optional, Tuple
+from typing import Optional, Tuple, Union
 import json
 import random
 import string
 from config import config
 
 from DB.files.admin_song import read_admin_song, upd_admin_song
+
+
+@dataclass
+class Ynison:
+    song_title: str
+    artists_title: str
+    song_id: str
+    player_type: str
+    repeat_mode: str
+    progress_s: int
+    duration_s: int
+    paused: bool
+    timestamp_s: int
+
 
 __client = ClientAsync(config.yandex_music.token)
 
@@ -115,6 +132,47 @@ async def __song_from_ynison() -> Optional[Tuple[str, str, str]]:
         return
 
 
+async def __song_from_ynison_expanded():
+    try:
+        async with aiohttp.ClientSession() as session:
+            ynison = await __fetch_ynison(session)
+
+            # print(ynison.keys())
+            # pprint(ynison, width=120, sort_dicts=False)
+
+            timestamp_ms = ynison['timestamp_ms']
+
+            player_state = ynison['player_state']
+            player_queue = player_state['player_queue']
+            status = player_state['status']
+
+            current_playable_index = player_queue['current_playable_index']
+            track = player_queue['playable_list'][current_playable_index]
+
+            progress_ms = int(status['progress_ms'])
+            duration_ms = int(status['duration_ms'])
+            paused = status['paused']
+            player_type = player_queue['entity_type']
+            repeat_mode = player_queue['options']['repeat_mode']
+
+            song = (await __client.tracks(track['playable_id']))[0]
+            artists_title = ', '.join(artist.name for artist in song.artists)
+
+            return Ynison(song.title,
+                          artists_title,
+                          str(song.id),
+                          player_type,
+                          repeat_mode,
+                          int(progress_ms) // 1000,
+                          int(duration_ms) // 1000,
+                          bool(paused),
+                          int(timestamp_ms) // 1000
+                          )
+    except Exception as e:
+        print(e)
+        return
+
+
 async def __get_song_lyrics(song_id) -> Optional[str]:
     song = (await __client.tracks(song_id))[0]
     if song.lyrics_info.has_available_text_lyrics:
@@ -129,6 +187,15 @@ async def __get_song_lyrics(song_id) -> Optional[str]:
 #     save_path = TEMP_DIR + f'/{artist_title}-{album_id}-{song_id}-{x_factor}.mp3'
 #     await song.download_async(save_path)
 #     return save_path
+
+
+async def get_admin_song_expanded() -> Union[Tuple[str, str, str], Ynison]:
+    song = await __song_from_ynison_expanded()
+
+    if song:
+        return song
+
+    return await get_admin_song()
 
 
 async def get_admin_song() -> Tuple[str, str, str]:
