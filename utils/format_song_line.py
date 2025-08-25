@@ -1,4 +1,3 @@
-from typing import List
 from utils.links import parse_yandex_music_link, is_yandex_link, is_link
 from utils.format_string import make_song_lyrics_message
 from utils.music_yandex import get_song_artist_title_by_song_id
@@ -25,7 +24,7 @@ async def format_song_line(lines: str) -> str:
 
     for line in clear_not_link_lines:
         if not artist_song and not (song and artist):
-            for sep in [' - ', ' – ', ' — ', ' : ']:
+            for sep in [' : ']:
                 if sep in line:
                     artist_song = line
                     break
@@ -40,4 +39,8 @@ async def format_song_line(lines: str) -> str:
         lyrics = artist_song
         artist_song = None
 
-    return make_song_lyrics_message(lyrics=lyrics, artist_song=artist_song, song=song, artist=artist, link=link)
+    return make_song_lyrics_message(lyrics=lyrics,
+                                    artist_song=artist_song,
+                                    song=song,
+                                    artist=artist,
+                                    link=link)
