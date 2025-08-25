@@ -111,7 +111,7 @@ def make_song_lyrics_message(lyrics: str = None,
         lyrics = clear_string(lyrics)
         lyrics = clean_typography(lyrics)
         lyrics = clean_quotes(lyrics)
-        lyrics.strip()
+        lyrics = lyrics.strip()
 
         message_parts.append(f'<i>«{lyrics}»</i>\n\n')
 
