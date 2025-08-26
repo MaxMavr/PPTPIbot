@@ -17,6 +17,8 @@ def get_query_count_emoji(count: int) -> str:
 
 
 def clean_typography(text: str):
+    space_sub = (r'[^\S\r\n]+', ' ')
+
     word_subs = (
         (r'\bбог\b', 'Бог'),
         (r'\bгосподь\b', 'Господь'),
@@ -31,7 +33,6 @@ def clean_typography(text: str):
     )
 
     typo_subs = (
-        (r'[^\S\r\n]+', ' '),
         (r' - ', ' — '),
         (r' – ', ' — '),
         (r'\.\.\.', '…'),
@@ -44,10 +45,27 @@ def clean_typography(text: str):
         (r' !', '!'),
     )
 
+    quote_subs = (
+        (r'„\s', '„'),
+        (r'\s“', '“'),
+        (r'\s»', '»'),
+        (r'«\s', '«'),
+        (r'(\w)„', r'\1 „'),
+        (r'“(\w)', r'“ \1'),
+        (r'»(\w)', r'» \1'),
+        (r'(\w)«', r'\1 «'),
+    )
+
+    pattern, repl = space_sub
+    text = re.sub(pattern, repl, text, flags=re.IGNORECASE)
+
     for pattern, repl in word_subs:
         text = re.sub(pattern, repl, text, flags=re.IGNORECASE)
 
     for pattern, repl in typo_subs:
+        text = re.sub(pattern, repl, text)
+
+    for pattern, repl in quote_subs:
         text = re.sub(pattern, repl, text)
 
     return text
@@ -109,8 +127,8 @@ def make_song_lyrics_message(lyrics: str = None,
 
     if lyrics:
         lyrics = clear_string(lyrics)
-        lyrics = clean_typography(lyrics)
         lyrics = clean_quotes(lyrics)
+        lyrics = clean_typography(lyrics)
         lyrics = lyrics.strip()
 
         message_parts.append(f'<i>«{lyrics}»</i>\n\n')
@@ -120,7 +138,9 @@ def make_song_lyrics_message(lyrics: str = None,
         for sep in [' : ']:
             parts = artist_song.split(sep)
             if len(parts) >= 2:
-                artist, song = parts[:2]
+                parts = [p.strip() for p in parts]
+                artist = parts[0]
+                song = ' '.join(parts[1:])
                 name_part = f'{artist.strip()} — {song.strip()}'
                 break
         else:
