@@ -1,4 +1,5 @@
 import re
+from typing import Tuple
 
 from phrases import PHRASES_RU
 
@@ -121,7 +122,8 @@ def make_song_lyrics_message(lyrics: str = None,
                              song: str = None,
                              artist: str = None,
                              link: str = None,
-                             caption: str = None
+                             caption: str = None,
+                             artist_song_seps: Tuple[str, ...] = (' : ',)
                              ) -> str:
     message_parts = []
 
@@ -135,7 +137,7 @@ def make_song_lyrics_message(lyrics: str = None,
 
     name_part = ''
     if artist_song:
-        for sep in [' : ']:
+        for sep in artist_song_seps:
             parts = artist_song.split(sep)
             if len(parts) >= 2:
                 parts = [p.strip() for p in parts]
