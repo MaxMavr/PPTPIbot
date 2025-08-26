@@ -22,7 +22,10 @@ class Ynison:
     progress_s: int
     duration_s: int
     paused: bool
+    is_offline: bool
     timestamp_s: int
+    volume: float
+    cover_url: str
 
 
 __client = ClientAsync(config.yandex_music.token)
@@ -140,34 +143,51 @@ async def __song_from_ynison_expanded():
             # print(ynison.keys())
             # pprint(ynison, width=120, sort_dicts=False)
 
-            timestamp_ms = ynison['timestamp_ms']
-
             player_state = ynison['player_state']
-            player_queue = player_state['player_queue']
-            status = player_state['status']
+            device = ynison['devices'][0]
+            timestamp_ms = ynison['timestamp_ms']
+            del ynison
 
-            current_playable_index = player_queue['current_playable_index']
-            track = player_queue['playable_list'][current_playable_index]
+            volume = device['volume']
+            is_offline = device['is_offline']
+            del device
+
+            status = player_state['status']
+            player_queue = player_state['player_queue']
+            del player_state
 
             progress_ms = int(status['progress_ms'])
             duration_ms = int(status['duration_ms'])
             paused = status['paused']
+            del status
+
+            current_playable_index = player_queue['current_playable_index']
+            playable_list = player_queue['playable_list']
             player_type = player_queue['entity_type']
             repeat_mode = player_queue['options']['repeat_mode']
+            del player_queue
 
-            song = (await __client.tracks(track['playable_id']))[0]
+            current_song = playable_list[current_playable_index]
+            current_song_title = current_song['title']
+            current_song_cover_url = current_song['cover_url_optional'].replace('%%', '1000x1000')
+            song_id = current_song['playable_id']
+            del current_song
+
+            song = (await __client.tracks(song_id))[0]
             artists_title = ', '.join(artist.name for artist in song.artists)
 
-            return Ynison(song.title,
-                          artists_title,
-                          str(song.id),
-                          player_type,
-                          repeat_mode,
-                          int(progress_ms) // 1000,
-                          int(duration_ms) // 1000,
-                          bool(paused),
-                          int(timestamp_ms) // 1000
-                          )
+            return Ynison(song_title=current_song_title,
+                          artists_title=artists_title,
+                          song_id=str(song_id),
+                          player_type=player_type,
+                          repeat_mode=repeat_mode,
+                          progress_s=int(progress_ms) // 1000,
+                          duration_s=int(duration_ms) // 1000,
+                          paused=paused == 'True',
+                          is_offline=is_offline == 'True',
+                          timestamp_s=int(timestamp_ms) // 1000,
+                          volume=volume,
+                          cover_url=current_song_cover_url)
     except Exception as e:
         print(e)
         return

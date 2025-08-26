@@ -1,4 +1,5 @@
 from datetime import datetime
+from pprint import pprint
 
 from aiogram.types import Message
 from aiogram import Router, F
@@ -24,7 +25,21 @@ async def _(message: Message):
     await default.cmd_admin_song(message)
 
 
-@router.message(F.text.lower().in_(['мрр']))
+REPEAT_MODES = {
+    'OFF': '',
+    'ONE': '↺¹ ',
+    'ALL': '↺   '
+}
+
+PLAYER_TYPES = {
+    'PLAYLIST': 'Плейлист слушает',
+    'ALBUM': 'Альбом слушает',
+    'ARTIST': 'Исполнителя слушает',
+    'RADIO': 'Волну слушает',
+}
+
+
+@router.message(F.text.lower().in_(['мрр', 'мррр', 'мрррр', 'мрррр/']))
 async def _(message: Message):
     async with ChatActionSender.typing(bot=bot, chat_id=message.chat.id):
         ynison = await get_admin_song_expanded()
@@ -34,52 +49,63 @@ async def _(message: Message):
             return
         ynison: Ynison
 
-        # paused_icon = '❚❚' if ynison.paused else '▶'
+        paused_icon = '❚❚' if ynison.paused else '▷'
+        offline_icon = '○' if ynison.is_offline else '●'
 
-        repeat_modes = {
-            'OFF': '',
-            'ONE': '🔂 ',
-            'ALL': '🔁 '
-        }
+        repeat_icon = REPEAT_MODES.get(ynison.repeat_mode, ' -     ')
 
-        repeat_icon = repeat_modes.get(ynison.repeat_mode, '')
-
-        player_types = {
-            'PLAYLIST': 'Плейлист слушает',
-            'ALBUM': 'Альбом слушает',
-            'ARTIST': 'Исполнителя слушает',
-            'RADIO': 'Волну слушает',
-        }
-
-        player_text = player_types.get(ynison.player_type, '')
+        player_text = PLAYER_TYPES.get(ynison.player_type, '      ')
+        player_text = f'<b>{player_text}</b>'
 
         title = make_song_lyrics_message(song=ynison.song_title, artist=ynison.artists_title,
                                          link=make_yandex_song_link(ynison.song_id))
 
-        def ms_to_minsec(seconds: int) -> str:
+        def seconds_to_minsec(seconds: int) -> str:
             minutes = seconds // 60
             seconds = seconds % 60
             return f"{minutes}:{seconds:02}"
 
-        def bar(duration: int, song_duration: int, length: int = 20) -> str:
+        def progress_bar(duration: int, song_duration: int, length: int = 16) -> str:
             pos = int((duration / song_duration) * length)
-            bar_str = "─" * length
-            bar_str = bar_str[:pos] + "◉" + bar_str[pos + 1:]
-            return bar_str
+            return "━" * pos + "◉" + "┈" * (length - pos)
 
-        progress_s = ynison.progress_s if ynison.progress_s \
-            else round(datetime.now().timestamp()) - ynison.timestamp_s
+        def volume_bar(volume: float) -> str:
+            volume_bars = ['▁', '▂', '▃', '▅', '▆', '▇', '▉']
+            volume = max(0.0, min(1.0, volume))
+            index = int(volume * (len(volume_bars) - 1))
+            return ''.join(volume_bars[:index])
 
-        progress_bar = f"{ms_to_minsec(progress_s)} " \
-                       f"{bar(progress_s, ynison.duration_s)} " \
-                       f"{ms_to_minsec(ynison.duration_s)}"
+        if ynison.progress_s:
+            progress_s = ynison.progress_s
+        else:
+            progress_s = round(datetime.now().timestamp()) - ynison.timestamp_s
+            if progress_s > ynison.duration_s:
+                progress_s = ynison.duration_s
 
-        def ms_to_date(s: int) -> str:
-            return datetime.fromtimestamp(s).strftime('%H:%M:%S %d.%m.%Y')
+        progress_bar_text = f"{seconds_to_minsec(progress_s)} " \
+                            f"{progress_bar(progress_s, ynison.duration_s)} " \
+                            f"{seconds_to_minsec(ynison.duration_s)}"
 
-        # update_date = f'<span class="tg-spoiler">{ms_to_date(ynison.timestamp_s)}</span>'
-        update_date = f''
+        volume_bar_text = volume_bar(ynison.volume)
 
-        mgs_text = '\n'.join([repeat_icon + title, progress_bar, player_text, update_date])
+        '''
+        нойз — я гей
+        0:45 ───────◉────── 2:30
+        ❚❚   ↠ ⁿᵉˣᵗ ᵈᶦᵃˡᵒᵍᵘᵉ ↺ ʳᵉᵖᵉᵃᵗ ⊜ ᵖᵃᵘˢᵉ
+        ᵛᵒˡᵘᵐᵉ : ▂▃▅▆▇▉
+        '''
 
-        await message.answer(mgs_text, disable_web_page_preview=True)
+        def seconds_to_date(seconds: int) -> str:
+            return datetime.fromtimestamp(seconds).strftime('%H:%M:%S %d.%m.%Y')
+
+        if message.text == 'мрррр/':
+            update_date = f' <span class="tg-spoiler">{seconds_to_date(ynison.timestamp_s)}</span>'
+        else:
+            update_date = ''
+
+        icons_line = f"   {offline_icon}        {paused_icon}        {repeat_icon}   {volume_bar_text}"
+        icons_descriptor = f"ᵒⁿˡᶦⁿᵉ   ᵖᵃᵘˢᵉ   ʳᵉᵖᵉᵃᵗ   ᵛᵒˡᵘᵐᵉ"
+
+        caption_text = '\n'.join([player_text + update_date, title, '', progress_bar_text, icons_line, icons_descriptor])
+
+        await message.answer_photo(photo=ynison.cover_url, caption=caption_text)
