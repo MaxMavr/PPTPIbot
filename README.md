@@ -26,7 +26,7 @@
 </p>
 
 <p align="center">
-<b>Phasalopedia</b><br>
+<b>Phasalo</b><br>
 <i>Делаем красиво!</i><br><br>
 2025
 </p>

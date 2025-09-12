@@ -23,7 +23,7 @@ commands:
     Вот парочка примеров:
 
   about: |
-    Продакшн <b>Phasalopedia</b>
+    Продакшн <b><a href="https://t.me/phasalo">Phasalo</a></b>
     Дизайн <b><a href="https://t.me/kfprod">KFproduction</a></b>
     
     <i>Информационные ресурсы
@@ -113,12 +113,12 @@ success:
   demoted: "Уровень доступа пользователя <i>{user_id}</i> понижен"
   promoted_by: "Уровень доступа пользователя <i>{user_id}</i> повышен"
   promoted: "Теперь Вы администратор"
-  banned: "Пользователь <i>{user_id}</i> успешно заблокирован"
-  unbanned: "Пользователь <i>{user_id}</i> успешно разблокирован"
   save_admin_song: "Установил песню\n{song}\nдля «Что слушает админ?» /admin_song"
   publish_post: "Опубликовал!"
   not_publish_post: "Прости, не выложили…\nТо ли с оформлением косяк, то ли просто не понравилось (._.)"
   suggest_post: "Отправил админу, надеюсь примет…"
+  banned: "Пользователь <a href=\"tg://user?id={user_id}\"><i>{user_id}</i></a> успешно заблокирован"
+  unbanned: "Пользователь <a href=\"tg://user?id={user_id}\"><i>{user_id}</i></a> успешно разблокирован"
   clear_temp: "Временные файлы очищены"
 
 error:
