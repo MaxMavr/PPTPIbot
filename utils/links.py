@@ -1,12 +1,6 @@
 import re
-from typing import Optional
 
 YANDEX_LINK_PATTERN = (
-    r"(?:https://music\.yandex\.ru/album/\d+/track/\d+)"
-    r"|(?:https://music\.yandex\.ru/track/\d+)"
-)
-
-YANDEX_SONG_ID_PATTERN = (
     r"(?:https://music\.yandex\.ru/album/(\d+)/track/(\d+))"
     r"|(?:https://music\.yandex\.ru/track/(\d+))"
 )
@@ -14,7 +8,7 @@ LINK_PATTERN = r'https://'
 
 
 def parse_yandex_music_link(link: str) -> str:
-    m = re.search(YANDEX_SONG_ID_PATTERN, link)
+    m = re.search(YANDEX_LINK_PATTERN, link)
     if m.group(1) and m.group(2):
         return m.group(2)
     else:
