@@ -20,9 +20,14 @@ async def _(message: Message):
     await message.answer(text=PHRASES_RU.answers.welcome)
 
 
-@router.message(F.text.lower().in_(['мяу', 'мау', 'мив', 'мав', 'ку', 'кря', 'пиу', 'пау', 'пум', 'квак']))
+@router.message(F.text.lower().in_(['мяу', 'мау', 'мив', 'мав', 'ку', 'кря', 'квак']))
 async def _(message: Message):
     await default.cmd_admin_song(message)
+
+
+@router.message(F.text.lower().in_(['пиу', 'пау', 'пум']))
+async def _(message: Message):
+    await default.cmd_mood_song(message)
 
 
 REPEAT_MODES = {

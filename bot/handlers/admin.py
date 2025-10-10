@@ -10,8 +10,8 @@ import temp
 from bot import pages
 from bot.bot_utils import command_arguments
 from utils.format_string import make_song_lyrics_message
-from utils.music_yandex import get_song_artist_title_by_song_id
-from DB.files.admin_song import upd_admin_song
+from utils.music_yandex import get_song_artist_title_by_song_id, get_admin_song
+from DB.files.admin_song import upd_admin_song, upd_mood_song
 from utils.links import parse_yandex_music_link, make_yandex_song_link
 
 router = AdminRouter()
@@ -44,6 +44,30 @@ async def _(message: Message, yandex_link):
     msg_song_text = make_song_lyrics_message(song=song, artist=artists, link=make_yandex_song_link(song_id))
 
     await message.answer(PHRASES_RU.replace('success.save_admin_song',
+                                            song=msg_song_text),
+                         disable_web_page_preview=True)
+
+
+@router.command('updmsong', 'обновить песню «Настроение»', 'ссылка на Яндекс Музыку')  # /updmsong
+@command_arguments.yandex_link
+async def _(message: Message, yandex_link):
+    song_id = parse_yandex_music_link(yandex_link)
+    song, artists = await get_song_artist_title_by_song_id(song_id)
+    upd_mood_song((song, artists, song_id))
+    msg_song_text = make_song_lyrics_message(song=song, artist=artists, link=make_yandex_song_link(song_id))
+
+    await message.answer(PHRASES_RU.replace('success.save_mood_song',
+                                            song=msg_song_text),
+                         disable_web_page_preview=True)
+
+
+@router.command('mood', 'обновить песню «Настроения» из Янисона')  # /mood
+async def _(message: Message):
+    song, artists, song_id = await get_admin_song()
+    upd_mood_song((song, artists, song_id))
+    msg_song_text = make_song_lyrics_message(song=song, artist=artists, link=make_yandex_song_link(song_id))
+
+    await message.answer(PHRASES_RU.replace('success.save_mood_song',
                                             song=msg_song_text),
                          disable_web_page_preview=True)
 
