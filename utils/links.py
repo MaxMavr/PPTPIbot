@@ -1,8 +1,8 @@
 import re
 
 YANDEX_LINK_PATTERN = (
-    r"(?:https://music\.yandex\.ru/album/(\d+)/track/(\d+))"
-    r"|(?:https://music\.yandex\.ru/track/(\d+))"
+    r"(?:https://music\.yandex\.(?:ru|com)/album/(\d+)/track/(\d+))"
+    r"|(?:https://music\.yandex\.(?:ru|com)/track/(\d+))"
 )
 LINK_PATTERN = r'https://'
 
