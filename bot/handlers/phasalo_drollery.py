@@ -44,7 +44,7 @@ PLAYER_TYPES = {
 }
 
 
-@router.message(F.text.lower().in_(['мрр', 'мррр', 'мрррр', 'мрррр/']))
+@router.message(F.text.lower().in_(['мрр', 'мррр', 'мрррр']))
 async def _(message: Message):
     async with ChatActionSender.typing(bot=bot, chat_id=message.chat.id):
         ynison = await get_admin_song_expanded()
@@ -93,24 +93,14 @@ async def _(message: Message):
 
         volume_bar_text = volume_bar(ynison.volume)
 
-        '''
-        нойз — я гей
-        0:45 ───────◉────── 2:30
-        ❚❚   ↠ ⁿᵉˣᵗ ᵈᶦᵃˡᵒᵍᵘᵉ ↺ ʳᵉᵖᵉᵃᵗ ⊜ ᵖᵃᵘˢᵉ
-        ᵛᵒˡᵘᵐᵉ : ▂▃▅▆▇▉
-        '''
-
         def seconds_to_date(seconds: int) -> str:
             return datetime.fromtimestamp(seconds).strftime('%H:%M:%S %d.%m.%Y')
 
-        if message.text == 'мрррр/':
-            update_date = f' <span class="tg-spoiler">{seconds_to_date(ynison.timestamp_s)}</span>'
-        else:
-            update_date = ''
+        update_date = f'<span class="tg-spoiler">{seconds_to_date(ynison.timestamp_s)}</span>'
 
         icons_line = f"   {offline_icon}        {paused_icon}        {repeat_icon}   {volume_bar_text}"
         icons_descriptor = f"ᵒⁿˡᶦⁿᵉ   ᵖᵃᵘˢᵉ   ʳᵉᵖᵉᵃᵗ   ᵛᵒˡᵘᵐᵉ"
 
-        caption_text = '\n'.join([player_text + update_date, title, '', progress_bar_text, icons_line, icons_descriptor])
+        caption_text = '\n'.join([player_text + ' ' + update_date, title, '', progress_bar_text, icons_line, icons_descriptor])
 
         await message.answer_photo(photo=ynison.cover_url, caption=caption_text)
