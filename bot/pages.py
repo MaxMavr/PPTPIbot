@@ -67,7 +67,8 @@ async def user_query(user_id: int, user_id_to_find: Optional[int], page: int = 1
                     chat_id=user_id,
                     message_id=message_id,
                     text=txt,
-                    reply_markup=reply_markup
+                    reply_markup=reply_markup,
+                    disable_web_page_preview=True
                 )
             except TelegramBadRequest as e:
                 if "message is not modified" in str(e):
