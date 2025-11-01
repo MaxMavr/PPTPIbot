@@ -140,6 +140,7 @@ error:
   not_yandex_link: "Нужнa ссылка на Яндекс Музыку"
   not_text: "—"
   unknown: "—"
+  processing_failed: "Ничего сделать не удалось (._.)"
 
 title:
   users: "<b>Пользователи</b>"
