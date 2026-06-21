@@ -1,18 +1,17 @@
-from typing import Tuple
 
-from utils.links import parse_yandex_music_link, is_yandex_link, is_link
 from utils.format_string import make_song_lyrics_message
+from utils.links import is_link, is_yandex_link, parse_yandex_music_link
 from utils.music_yandex import get_song_artist_title_by_song_id
 
 
-async def format_song_line(lines: str, artist_song_seps: Tuple[str, ...] = (' : ',)) -> str:
+async def format_song_line(lines: str, artist_song_seps: tuple[str, ...] = (' : ',)) -> str:
     lyrics_parts = []
     artist_song = None
     song = None
     artist = None
     link = None
 
-    clear_lines = [l.strip() for l in lines.split('\n') if l.strip()]
+    clear_lines = [line.strip() for line in lines.split('\n') if line.strip()]
     clear_not_link_lines = []
 
     for line in clear_lines:
@@ -41,9 +40,6 @@ async def format_song_line(lines: str, artist_song_seps: Tuple[str, ...] = (' : 
         lyrics = artist_song
         artist_song = None
 
-    return make_song_lyrics_message(lyrics=lyrics,
-                                    artist_song=artist_song,
-                                    song=song,
-                                    artist=artist,
-                                    link=link,
-                                    artist_song_seps=artist_song_seps)
+    return make_song_lyrics_message(
+        lyrics=lyrics, artist_song=artist_song, song=song, artist=artist, link=link, artist_song_seps=artist_song_seps
+    )
