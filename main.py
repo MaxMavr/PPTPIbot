@@ -1,50 +1,90 @@
-#
-# ⠀     ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀  ⠀⣴⣶⣿⣿⣿⣿⣿⡆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀          ⢰⣶⣿⣿⣿⣿⣿⡆
-# ⠀     ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀ ⠀ ⢰⣿⡏⠀⠀⠀⢸⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀       ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀   ⢰⣿⡏⠀⠀⠀⢸⣿⡇
-# ⠀     ⠀⠀⠀⠀⠀⠀⣴⣿⣿⣿⣿⣿⣷⣤⣤⣤⣄⠀⣾⣿⠁⠀⠀⠀⣿⣿⣤⣤⣀⠀⠀⠀⠀⠀⣀⣠⣤⣤⣤⣤⣤⣤⣤⣤⣄⠀⠀⣠⣴⣶⣶⣶⣶⣦⡀⠀⠀⠀⣀⣠⣤⣤⣤⣤⣤⣤⣤⣄⣀⣿⡿⠀⠀⠀⢰⣿⡏⠀⢀⣀⣤⣤⣤⣤⣀
-# ⠀     ⠀⠀⠀⠀⠀⢸⣿⡏⠀⠀⠀⠸⠟⠛⠛⠛⢿⣿⣿⡿⠀⠀⠀⢸⠿⠛⠛⠻⢿⣿⣄⠀⣴⣾⡿⠟⠛⠛⠛⠿⠛⠛⠛⢻⣿⡇⣸⣿⠟⠉⠉⠉⢹⣿⡇⣾⡿⠟⠛⠛⠛⠿⠛⠛⠛⢻⣿⣿⡏⠀⠀ ⣼⣿⣡⣶⣿⠿⠟⠛⠛⠻⢿⣿⣆
-# ⠀     ⠀⠀⠀⠀⠀⣾⣿⠁⠀⠀⠀⣠⣤⡄⠀⠀⠀⢿⣿⠇⠀⠀⠀⢀⣀⡀⠀⠀⠀⢿⣿⣾⣿⠋⠀⠀⢀⣴⣶⡄⠀⠀⠀⣼⣿⢣⣿⡿⠀⠀⠀⠀⢸⣿⣷⣿⡿⠃⠀⠀⢠⣤⣤⠀⠀⠀⠀⣿⣿⣿⡏⠀⠀  ⣿⣿⣿⠟⠁⠀⠀⣤⣶⡄⠀⢻⣿⡄
-# ⠀     ⠀⠀⠀⠀⢠⣿⡟⠀⠀⠀⢰⣿⣿⣿⠀⠀⠀⢸⣿⠀⠀⠀⢠⣾⣿⡇⠀⠀⠀⣾⣿⡿⠁⠀⠀⢠⣿⣿⣿⠁⠀⠀⠀⣿⣿⣿⣿⠁⣼⠀⠀⠀⠸⣿⣿⡟⠀⠀⠀⣰⣿⣿⡟⠀⠀⠀⢸⣿⣿⡏⠀⠀⠀⣼⣿⣿⠋⠀⠀⠀⣼⣿⣿⡇⠀⢸⣿⡇
-# ⠀     ⠀⠀⠀⠀⣸⣿⠇⠀⠀⠀⣾⣿⣿⡏⠀⠀⠀⣼⡇⠀⠀⠀⣸⣿⣿⠁⠀⠀⢠⣿⣿⠇⠀⠀⠀⣾⣿⣿⡟⠀⠀⠀⢸⣿⣿⣿⠃⣰⣿⠀⠀⠀⠀⣿⡿⠀⠀⠀⢠⣿⣿⣿⠇⠀⠀⠀⣾⣿⣿⠁⠀⠀⠀⣿⣿⡏⠀⠀⠀⢸⣿⣿⣿⠃⠀⢸⣿⡇
-# ⠀     ⠀⠀⠀⢀⣿⣿⠀⠀⠀⢠⣿⣿⣿⠁⠀⠀⢀⣿⠀⠀⠀⢀⣿⣿⡏⠀⠀⠀⣸⣿⣿⠀⠀⠀⢰⣿⣿⣿⠃⠀⠀⠀⣿⣿⡟⠃⠀⣿⣿⠀⠀⠀⠀⣿⡇⠀⠀⠀⢸⣿⣿⡿⠀⠀⠀⢠⣿⣿⡟⠀⠀⠀⢸⣿⣿⠁⠀⠀⠀⣿⣿⣿⡟⠀⠀⣾⣿⠁
-# ⠀     ⠀⠀⠀⢸⣿⡇⠀⠀⠀⢼⣿⡿⠃⠀⠀⢀⣼⡟⠀⠀⠀⢸⣿⣿⡇⠀⠀⠀⢿⣿⠏⠀⠀⠀⠘⢿⡿⠏⠀⠀⠀⠀⣿⡿⠀⢠⣤⣿⡿⠀⠀⠀⠀⠋⡀⠀⠀⠀⠸⣿⡿⠃⠀⠀⠀⢸⣿⡿⠁⠀⠀⠀⢿⣿⠟⠀⠀⠀⠀⢿⣿⡟⠁⠀⣼⣿⡏
-# ⠀     ⠀⠀⠀⣾⣿⠁⠀⠀⠀⠀⠀⠀⠀⢀⣠⣾⣿⠃⠀⠀⠀⣿⣿⣿⣧⠀⠀⠀⠀⠀⣠⣆⠀⠀⠀⠀⢀⣴⣆⠀⠀⠀⠀⣀⣤⠀⠉⠉⠀⠀⠀⣠⣴⣿⣷⡀⠀⠀⠀⠀⢀⣴⡀⠀⠀⠀⠀⣠⣆⠀⠀⠀⠀⠀⣠⣦⡀⠀⠀⠀  ⠀⠀⣠⣾⣿⠏
-# ⠀     ⠀⠀⢰⣿⡏⠀⠀⠀⢸⣿⣶⣶⣿⣿⡿⢿⣿⣷⣶⣶⣾⣿⠏⠙⢿⣿⣶⣶⣾⣿⡿⢿⣿⣶⣶⣾⣿⡿⣿⣷⣶⣶⣿⣿⢿⣿⣶⣶⣶⣾⣿⡿⠟⠉⠻⣿⣷⣶⣶⣾⣿⢿⣿⣶⣶⣶⣿⡿⣿⣷⣶⣶⣶⣿⡿⡿⠟
-# ⠀     ⠀⠀⣼⣿⠃⠀⠀⠀⣿⣿⠉
-# ⠀     ⠀⢰⣿⡿⠀⠀⠀⢰⣿⡏
-# ⠀     ⠀⣾⣿⣷⣶⣶⣿⣿⠿⠁⠀⠀⠀⠀⠀⢀⣶⠿⢿⣶⢀⣶⡆⢀⣶⠆⢠⣾⣿⠀⢀⣴⣶⠿⠇⠀⣾⢿⡇⠀⣴⡿⠀⢀⣴⣶⣷⣶⡄⢀⣾⠿⢿⣦⢀⣶⡾⠿⠇⣾⡿⢿⣶⠀⣴⣶⠀⣴⣿⣷⠀⠀⠀⢠⣾⠿⣿⣦⢀⣶⠆⢰⣿⠂
-#                 ⠀⠀⠀⠀⠀⠀⣼⣿⣤⣾⠟⣸⣿⣶⣾⡟⢠⣿⣃⣿⡇⠘⢿⣧⡀⠀⣼⣏⣸⡇⢠⣿⠃⠀⣾⡟⠁⠈⣿⠇⣼⣿⣤⣾⠏⣸⡿⠶⠆⢸⣿⠁⣸⣿⢠⣿⠇⣸⣟⣸⣿⠀⠀⠀⣾⣿⣤⡿⠋⣼⡟⠀⣾⡏
-# ⠀     ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⠋⠉⠀⠀⣿⠇⠠⠿⠃⠿⠛⠻⣿⠡⣶⣶⠿⠟⠼⠟⠛⣿⡇⣾⣿⡶⠆⠻⢿⣶⠾⠋⢠⣿⠋⠉⠀⠠⠿⠷⠶⠀⢿⣷⠾⠟⠁⣼⡟⠰⠿⠛⢻⡿⠠⡶⢰⡿⠉⢿⠇⠀⢿⣷⣾⠟⠁
-#
-
 import asyncio
-from aiogram import Dispatcher
-
-from config import bot
-from bot.middlewares.get_user import GetUserMiddleware
-from bot.middlewares.shadow_ban import ShadowBanMiddleware
-from bot.middlewares.shadow_not_subscribed import ShadowNotSubscribedMiddleware
-from bot.middlewares.logging_query import UserLoggerMiddleware
-from bot import handlers
-
-from DB import init_database
 import logging
+from pathlib import Path
+
+from aiogram import Bot, Dispatcher
+from aiogram.client.default import DefaultBotProperties
+from aiogram.client.session.aiohttp import AiohttpSession
+from aiogram.fsm.storage.memory import MemoryStorage
+from aiogram_dialog import setup_dialogs
+from dishka.integrations.aiogram import setup_dishka
+
+from bot.dialogs import user_query_dialog, users_dialog
+from bot.handlers import (
+    admin_router,
+    callbacks_router,
+    default_router,
+    inline_router,
+    phasalo_drollery_router,
+)
+from bot.handlers.default import register_password_handler
+from bot.middlewares import (
+    GetUserMiddleware,
+    ShadowBanMiddleware,
+    ShadowNotSubscribedMiddleware,
+    UserLoggerMiddleware,
+)
+from config import load_config
+from config.const import BASE_DIR
+from config.logging import setup_logging
+from container import build_container
+from db import init_database
 
 logger = logging.getLogger(__name__)
 
 
 async def main() -> None:
-    logger.info('Creating db tables')
-    init_database()
+    config = load_config()
+    Path(BASE_DIR / 'logs').mkdir(exist_ok=True)
+    Path(BASE_DIR / 'temp').mkdir(exist_ok=True)
+    setup_logging(config.log)
 
-    dp = Dispatcher()
+    logger.info('Creating db tables')
+    init_database(config.db_path)
+
+    session_kwargs = {}
+    if config.tg_bot.proxy_url:
+        session_kwargs['proxy'] = config.tg_bot.proxy_url
+        logger.info(f'Proxy configured: {config.tg_bot.proxy_url}')
+    else:
+        logger.info('No proxy configured, connecting directly')
+
+    bot_name = config.tg_bot.bot_name
+    metrics_port = config.tg_bot.metrics_port
+    if bot_name and metrics_port:
+        from aiogram_metrics import InstrumentedAiohttpSession, MetricsMiddleware, start_metrics_server
+
+        start_metrics_server(port=metrics_port)
+        session = InstrumentedAiohttpSession(bot_name=bot_name, **session_kwargs)
+        metrics_middleware = MetricsMiddleware(bot_name=bot_name)
+    else:
+        session = AiohttpSession(**session_kwargs)
+        metrics_middleware = None
+        logger.info('Metrics disabled (set BOT_NAME and METRICS_PORT to enable)')
+
+    bot = Bot(
+        token=config.tg_bot.token,
+        session=session,
+        default=DefaultBotProperties(parse_mode='HTML'),
+    )
+    container = build_container(config)
+
+    dp = Dispatcher(storage=MemoryStorage())
+    if metrics_middleware:
+        dp.update.outer_middleware(metrics_middleware)
+    setup_dishka(container, dp)
+
+    register_password_handler(dp, config.tg_bot.admin_password)
 
     logger.info('Including routers')
-    dp.include_router(handlers.admin.router)
-    dp.include_router(handlers.phasalo_drollery.router)
-    dp.include_router(handlers.default.router)
-    dp.include_router(handlers.callbacks.router)
-    dp.include_router(handlers.inline.router)
+    dp.include_router(admin_router)
+    dp.include_router(phasalo_drollery_router)
+    dp.include_router(default_router)
+    dp.include_router(callbacks_router)
+    dp.include_router(inline_router)
+    dp.include_router(users_dialog)
+    dp.include_router(user_query_dialog)
+    setup_dialogs(dp)
 
     logger.info('Including middlewares')
     dp.update.middleware(GetUserMiddleware())
@@ -53,7 +93,8 @@ async def main() -> None:
     dp.message.middleware.register(UserLoggerMiddleware())
     dp.inline_query.middleware.register(UserLoggerMiddleware())
 
-    logger.info(f'{(await bot.get_me()).first_name} полетел!\n * Running on http://t.me/{(await bot.get_me()).username}')
+    me = await bot.get_me()
+    logger.info(f'{me.first_name} starting\n * Running on http://t.me/{me.username}')
     try:
         await dp.start_polling(bot)
     except Exception as e:
