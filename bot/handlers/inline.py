@@ -2,8 +2,9 @@ import hashlib
 
 from aiogram import Router, types
 from aiogram.types import InlineQueryResultArticle, InputTextMessageContent
-from utils.format_song_line import format_song_line
+
 from phrases import PHRASES_RU
+from utils.format_song_line import format_song_line
 from utils.format_string import make_song_lyrics_message
 from utils.links import make_yandex_song_link
 from utils.music_yandex import get_admin_song, get_random_song_lines
@@ -27,8 +28,7 @@ async def inline_get_photo(query: types.InlineQuery):
         if text == 'as':
             lyrics = await get_random_song_lines(song_id)
 
-        text = make_song_lyrics_message(song=song, artist=artists,
-                                        link=make_yandex_song_link(song_id), lyrics=lyrics)
+        text = make_song_lyrics_message(song=song, artist=artists, link=make_yandex_song_link(song_id), lyrics=lyrics)
 
     else:
         title = PHRASES_RU.title.inline
@@ -39,10 +39,7 @@ async def inline_get_photo(query: types.InlineQuery):
         id=hashlib.md5(text.encode()).hexdigest(),
         title=title,
         description=description,
-        input_message_content=InputTextMessageContent(
-            message_text=text,
-            disable_web_page_preview=True
-        )
+        input_message_content=InputTextMessageContent(message_text=text, disable_web_page_preview=True),
     )
 
     await query.answer([result], cache_time=1, is_personal=True)

@@ -1,16 +1,14 @@
 from datetime import datetime
-from pprint import pprint
 
+from aiogram import Bot, F, Router
 from aiogram.types import Message
-from aiogram import Router, F
 from aiogram.utils.chat_action import ChatActionSender
 
 from bot.handlers import default
-from config import bot
 from phrases import PHRASES_RU
 from utils.format_string import make_song_lyrics_message
 from utils.links import make_yandex_song_link
-from utils.music_yandex import get_admin_song_expanded, Ynison
+from utils.music_yandex import Ynison, get_admin_song_expanded
 
 router = Router()
 
@@ -21,19 +19,19 @@ async def _(message: Message):
 
 
 @router.message(F.text.lower().in_(['мяу', 'мау', 'мив', 'мав', 'ку', 'кря', 'квак']))
-async def _(message: Message):
-    await default.cmd_admin_song(message)
+async def _(message: Message, bot: Bot):
+    await default.cmd_admin_song(message, bot)
 
 
 @router.message(F.text.lower().in_(['пиу', 'пау', 'пум']))
-async def _(message: Message):
-    await default.cmd_mood_song(message)
+async def _(message: Message, bot: Bot):
+    await default.cmd_mood_song(message, bot)
 
 
 REPEAT_MODES = {
     'OFF': '',
     'ONE': '↺¹ ',
-    'ALL': '↺   '
+    'ALL': '↺   ',
 }
 
 PLAYER_TYPES = {
@@ -45,12 +43,12 @@ PLAYER_TYPES = {
 
 
 @router.message(F.text.lower().in_(['мрр', 'мррр', 'мрррр']))
-async def _(message: Message):
+async def _(message: Message, bot: Bot):
     async with ChatActionSender.typing(bot=bot, chat_id=message.chat.id):
         ynison = await get_admin_song_expanded()
 
         if isinstance(ynison, tuple):
-            await default.cmd_admin_song(message)
+            await default.cmd_admin_song(message, bot)
             return
         ynison: Ynison
 
@@ -62,17 +60,18 @@ async def _(message: Message):
         player_text = PLAYER_TYPES.get(ynison.player_type, '      ')
         player_text = f'<b>{player_text}</b>'
 
-        title = make_song_lyrics_message(song=ynison.song_title, artist=ynison.artists_title,
-                                         link=make_yandex_song_link(ynison.song_id))
+        title = make_song_lyrics_message(
+            song=ynison.song_title, artist=ynison.artists_title, link=make_yandex_song_link(ynison.song_id)
+        )
 
         def seconds_to_minsec(seconds: int) -> str:
             minutes = seconds // 60
             seconds = seconds % 60
-            return f"{minutes}:{seconds:02}"
+            return f'{minutes}:{seconds:02}'
 
         def progress_bar(duration: int, song_duration: int, length: int = 16) -> str:
             pos = int((duration / song_duration) * length)
-            return "━" * pos + "◉" + "┈" * (length - pos)
+            return '━' * pos + '◉' + '┈' * (length - pos)
 
         def volume_bar(volume: float) -> str:
             volume_bars = ['▁', '▂', '▃', '▅', '▆', '▇', '▉']
@@ -87,9 +86,11 @@ async def _(message: Message):
             if progress_s > ynison.duration_s:
                 progress_s = ynison.duration_s
 
-        progress_bar_text = f"{seconds_to_minsec(progress_s)} " \
-                            f"{progress_bar(progress_s, ynison.duration_s)} " \
-                            f"{seconds_to_minsec(ynison.duration_s)}"
+        progress_bar_text = (
+            f'{seconds_to_minsec(progress_s)} '
+            f'{progress_bar(progress_s, ynison.duration_s)} '
+            f'{seconds_to_minsec(ynison.duration_s)}'
+        )
 
         volume_bar_text = volume_bar(ynison.volume)
 
@@ -98,9 +99,11 @@ async def _(message: Message):
 
         update_date = f'<span class="tg-spoiler">{seconds_to_date(ynison.timestamp_s)}</span>'
 
-        icons_line = f"   {offline_icon}        {paused_icon}        {repeat_icon}   {volume_bar_text}"
-        icons_descriptor = f"ᵒⁿˡᶦⁿᵉ   ᵖᵃᵘˢᵉ   ʳᵉᵖᵉᵃᵗ   ᵛᵒˡᵘᵐᵉ"
+        icons_line = f'   {offline_icon}        {paused_icon}        {repeat_icon}   {volume_bar_text}'
+        icons_descriptor = 'ᵒⁿˡᶦⁿᵉ   ᵖᵃᵘˢᵉ   ʳᵉᵖᵉᵃᵗ   ᵛᵒˡᵘᵐᵉ'
 
-        caption_text = '\n'.join([player_text + ' ' + update_date, title, '', progress_bar_text, icons_line, icons_descriptor])
+        caption_text = '\n'.join(
+            [player_text + ' ' + update_date, title, '', progress_bar_text, icons_line, icons_descriptor]
+        )
 
         await message.answer_photo(photo=ynison.cover_url, caption=caption_text)
