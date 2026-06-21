@@ -4,6 +4,7 @@ from aiogram.utils.chat_action import ChatActionSender
 
 from bot.bot_utils.filters import EditFilter
 from bot.keyboards import inline as ikb
+from bot.metrics import record_song_line
 from phrases import PHRASES_RU
 from utils.format_song_line import format_song_line
 
@@ -22,6 +23,8 @@ async def handler(message: Message, bot: Bot):
         if not msg_text:
             await message.answer(text=PHRASES_RU.error.processing_failed)
             return
+
+        record_song_line('private')
 
         if await EditFilter.check(bot, message.from_user.id):
             await message.answer(

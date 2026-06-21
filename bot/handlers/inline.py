@@ -3,6 +3,7 @@ import hashlib
 from aiogram import Router, types
 from aiogram.types import InlineQueryResultArticle, InputTextMessageContent
 
+from bot.metrics import record_inline_query, record_song_line
 from phrases import PHRASES_RU
 from utils.format_song_line import format_song_line
 from utils.format_string import make_song_lyrics_message
@@ -19,6 +20,8 @@ async def inline_get_photo(query: types.InlineQuery):
     if not text:
         return await query.answer([], cache_time=1, is_personal=True)
 
+    record_inline_query()
+
     if text in ['as', '/', '@']:
         song, artists, song_id = await get_admin_song()
         title = song
@@ -34,6 +37,7 @@ async def inline_get_photo(query: types.InlineQuery):
         title = PHRASES_RU.title.inline
         description = PHRASES_RU.footnote.inline
         text = await format_song_line(text)
+        record_song_line('inline')
 
     result = InlineQueryResultArticle(
         id=hashlib.md5(text.encode()).hexdigest(),

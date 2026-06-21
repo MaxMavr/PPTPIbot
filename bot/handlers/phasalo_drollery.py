@@ -5,6 +5,7 @@ from aiogram.types import Message
 from aiogram.utils.chat_action import ChatActionSender
 
 from bot.handlers import default
+from bot.metrics import record_song_request
 from phrases import PHRASES_RU
 from utils.format_string import make_song_lyrics_message
 from utils.links import make_yandex_song_link
@@ -51,6 +52,8 @@ async def _(message: Message, bot: Bot):
             await default.cmd_admin_song(message, bot)
             return
         ynison: Ynison
+
+        record_song_request('mrr')
 
         paused_icon = '❚❚' if ynison.paused else '▷'
         offline_icon = '○' if ynison.is_offline else '●'

@@ -7,6 +7,7 @@ from bot.chat_type_handlers import group, private
 from bot.filters.password import PasswordFilter
 from bot.handlers.admin import command_getcmds
 from bot.keyboards import inline as ikb
+from bot.metrics import record_song_request
 from db.files.admin_song import read_mood_song
 from db.repositories.users import UsersRepository
 from phrases import PHRASES_RU
@@ -44,6 +45,7 @@ async def _(message: Message):
 
 @router.command(('admin_song', 'as'), 'получить песню, которую сейчас слушает админ')  # /admin_song
 async def cmd_admin_song(message: Message, bot: Bot):
+    record_song_request('admin_song')
     async with ChatActionSender.typing(bot=bot, chat_id=message.chat.id):
         song, artists, song_id = await get_admin_song()
         lyrics = await get_random_song_lines(song_id)
@@ -56,6 +58,7 @@ async def cmd_admin_song(message: Message, bot: Bot):
 
 @router.command(('mood_song', 'ms'), 'получить песню, настроения дня')  # /mood_song
 async def cmd_mood_song(message: Message, bot: Bot):
+    record_song_request('mood_song')
     async with ChatActionSender.typing(bot=bot, chat_id=message.chat.id):
         song, artists, song_id = read_mood_song()
         lyrics = await get_random_song_lines(song_id)

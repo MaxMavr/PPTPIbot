@@ -93,12 +93,30 @@ async def main() -> None:
     dp.message.middleware.register(UserLoggerMiddleware())
     dp.inline_query.middleware.register(UserLoggerMiddleware())
 
+    gauge_task = None
+    if metrics_middleware:
+        from bot.metrics import refresh_business_gauges
+        from db.repositories.users import UsersRepository
+
+        users_repo = await container.get(UsersRepository)
+
+        async def _gauge_loop() -> None:
+            while True:
+                refresh_business_gauges(users_repo)
+                await asyncio.sleep(60)
+
+        refresh_business_gauges(users_repo)
+        gauge_task = asyncio.create_task(_gauge_loop())
+
     me = await bot.get_me()
     logger.info(f'{me.first_name} starting\n * Running on http://t.me/{me.username}')
     try:
         await dp.start_polling(bot)
     except Exception as e:
         logger.exception(e)
+    finally:
+        if gauge_task:
+            gauge_task.cancel()
 
 
 if __name__ == '__main__':

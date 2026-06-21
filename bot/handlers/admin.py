@@ -7,6 +7,7 @@ import temp
 from bot.bot_utils import command_arguments
 from bot.bot_utils.routers import AdminRouter, BaseRouter
 from bot.dialogs import UserQuerySG, UsersSG
+from bot.metrics import record_admin_song_updated
 from config.const import QUERIES_PER_PAGE
 from db.files.admin_song import upd_admin_song, upd_mood_song
 from db.repositories.queries import QueriesRepository
@@ -44,6 +45,7 @@ async def _(message: Message, yandex_link):
     song_id = parse_yandex_music_link(yandex_link)
     song, artists = await get_song_artist_title_by_song_id(song_id)
     upd_admin_song((song, artists, song_id))
+    record_admin_song_updated('admin')
     msg_song_text = make_song_lyrics_message(song=song, artist=artists, link=make_yandex_song_link(song_id))
 
     await message.answer(
@@ -58,6 +60,7 @@ async def _(message: Message, yandex_link):
     song_id = parse_yandex_music_link(yandex_link)
     song, artists = await get_song_artist_title_by_song_id(song_id)
     upd_mood_song((song, artists, song_id))
+    record_admin_song_updated('mood')
     msg_song_text = make_song_lyrics_message(song=song, artist=artists, link=make_yandex_song_link(song_id))
 
     await message.answer(
@@ -70,6 +73,7 @@ async def _(message: Message, yandex_link):
 async def _(message: Message):
     song, artists, song_id = await get_admin_song()
     upd_mood_song((song, artists, song_id))
+    record_admin_song_updated('mood')
     msg_song_text = make_song_lyrics_message(song=song, artist=artists, link=make_yandex_song_link(song_id))
 
     await message.answer(

@@ -3,6 +3,7 @@ from aiogram.types import CallbackQuery
 
 from bot.bot_utils.filters import EditFilter
 from bot.keyboards import inline as ikb
+from bot.metrics import record_post
 from config import Config
 from config.const import CHANNEL_ID
 from db.repositories.users import UsersRepository
@@ -15,11 +16,13 @@ async def __clear_callback(callback: CallbackQuery) -> None:
 
 async def cancel_post(callback: CallbackQuery) -> None:
     await __clear_callback(callback)
+    record_post('cancelled')
 
 
 async def reject_post(callback: CallbackQuery, bot: Bot, user_id: int, message_id: int) -> None:
     await __clear_callback(callback)
     await bot.send_message(reply_to_message_id=message_id, chat_id=user_id, text=PHRASES_RU.success.not_publish_post)
+    record_post('rejected')
 
 
 async def publish_post(
@@ -49,6 +52,7 @@ async def publish_post(
 
     await bot.send_message(chat_id=CHANNEL_ID, text=msg_text, disable_web_page_preview=True)
     await callback.message.answer(text=PHRASES_RU.success.publish_post)
+    record_post('published')
 
     if user and message_id:
         await bot.send_message(
@@ -96,3 +100,4 @@ async def suggest_post(
     )
 
     await callback.message.answer(text=PHRASES_RU.success.suggest_post)
+    record_post('suggested')
