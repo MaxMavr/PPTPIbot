@@ -1,4 +1,3 @@
-
 from utils.format_string import make_song_lyrics_message
 from utils.links import is_link, is_yandex_link, parse_yandex_music_link
 from utils.music_yandex import get_song_artist_title_by_song_id
