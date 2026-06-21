@@ -1,6 +1,6 @@
 import logging
-import os
 import sqlite3
+from pathlib import Path
 from typing import Any
 
 logger = logging.getLogger(__name__)
@@ -9,8 +9,8 @@ logger = logging.getLogger(__name__)
 class BaseTable:
     __tablename__: str
 
-    def __init__(self, db_name: str = f'{os.path.dirname(__file__)}/users.db'):
-        self.conn = sqlite3.connect(db_name)
+    def __init__(self, db_path: Path):
+        self.conn = sqlite3.connect(db_path)
         self.conn.row_factory = sqlite3.Row
         self.cursor = self.conn.cursor()
 
@@ -18,9 +18,8 @@ class BaseTable:
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        """Вызывается при выходе из контекстного менеджера"""
         if self.conn:
-            if exc_type is not None:  # Если произошло исключение
+            if exc_type is not None:
                 self.conn.rollback()
             else:
                 self.conn.commit()
@@ -30,7 +29,7 @@ class BaseTable:
 
     def _log(self, action: str, **kwargs: Any):
         logger.info(
-            'Table=\'%s\', Action=\'%s\', Details: %s',
+            "Table='%s', Action='%s', Details: %s",
             self.__tablename__,
             action,
             ', '.join(f'{k}={v}' for k, v in kwargs.items()),
